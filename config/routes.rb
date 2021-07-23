@@ -209,4 +209,22 @@ Rails.application.routes.draw do
     resources :settings, only: :index
     resources :plugins,  only: :index
   end
+
+
+  namespace :api, defaults: { format: :json }  do
+    get :status, to: 'api#status'
+    resources :users, id: /\d+/, except: %i[index destroy create] do
+      member do
+        get :avatar
+        get :password
+        match :upload_avatar, via: %i[put patch]
+        patch :change_password
+        post :redraw
+        post :sign_in
+      end
+      collection do
+        match :auto_complete, via: %i[get post]
+      end
+    end
+  end
 end
