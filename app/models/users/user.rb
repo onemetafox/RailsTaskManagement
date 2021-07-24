@@ -148,9 +148,9 @@ class User < ActiveRecord::Base
 
   # Generate the value of single access token if it hasn't been set already.
   #----------------------------------------------------------------------------
-  def to_json(_options = nil)
-    [name].to_json
-  end
+  # def to_json(_options = nil)
+  #   [name].to_json
+  # end
 
   def to_xml(_options = nil)
     [name].to_xml

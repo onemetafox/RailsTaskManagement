@@ -165,7 +165,7 @@ Rails.application.routes.draw do
   end
 
   namespace :admin do
-    
+
     resources :groups
 
     resources :users do
@@ -218,6 +218,17 @@ Rails.application.routes.draw do
     namespace :admin do
 
       resources :groups
+
+      resources :users do
+        collection do
+          match :auto_complete, via: %i[get post]
+        end
+        member do
+          get :confirm
+          put :suspend
+          put :reactivate
+        end
+      end
 
     end
   end

@@ -5,7 +5,7 @@
 # Fat Free CRM is freely distributable under the terms of MIT license.
 # See MIT-LICENSE file or http://www.opensource.org/licenses/mit-license.php
 #------------------------------------------------------------------------------
-class Admin::UsersController < Admin::ApplicationController
+class Api::Admin::UsersController < Api::Admin::ApplicationController
   # before_action :setup_current_tab, only: %i[index show]
 
   # load_resource except: [:create]
@@ -15,14 +15,17 @@ class Admin::UsersController < Admin::ApplicationController
   #----------------------------------------------------------------------------
   def index
     @users = get_users(page: params[:page])
-    respond_with(@users)
+    render json: @users.to_json(include: [:groups]), status: 200
+    # respond_with(@users)
   end
 
   # GET /admin/users/1
   # GET /admin/users/1.xml
   #----------------------------------------------------------------------------
   def show
-    respond_with(@user)
+    # respond_with(@user)
+    @user = User.find_by_id(params[:id])
+    render json: @user.to_json(include: [:groups]), status: 200
   end
 
   # GET /admin/users/new
@@ -34,11 +37,11 @@ class Admin::UsersController < Admin::ApplicationController
 
   # GET /admin/users/1/edit                                                AJAX
   #----------------------------------------------------------------------------
-  def edit
-    @previous = User.find_by_id(Regexp.last_match[1]) || Regexp.last_match[1].to_i if params[:previous].to_s =~ /(\d+)\z/
+  # def edit
+  #   @previous = User.find_by_id(Regexp.last_match[1]) || Regexp.last_match[1].to_i if params[:previous].to_s =~ /(\d+)\z/
 
-    render @user
-  end
+  #   render json: @previous
+  # end
 
   # POST /admin/users
   # POST /admin/users.xml                                                  AJAX
@@ -48,7 +51,7 @@ class Admin::UsersController < Admin::ApplicationController
     @user.suspend_if_needs_approval
     @user.save
 
-    respond_with(@user)
+    render json: @user
   end
 
   # PUT /admin/users/1
@@ -102,13 +105,14 @@ class Admin::UsersController < Admin::ApplicationController
   protected
 
   def user_params
-    return {} unless params[:user]
+    # return {} unless params[:user]
+    return {} unless params
 
-    params[:user][:password_confirmation] = nil if params[:user][:password_confirmation].blank?
-    params[:user][:email].try(:strip!)
-    params[:user][:alt_email].try(:strip!)
+    params[:password_confirmation] = nil if params[:password_confirmation].blank?
+    params[:email].try(:strip!)
+    params[:alt_email].try(:strip!)
 
-    params[:user].permit(
+    params.permit(
       :admin,
       :username,
       :email,
@@ -145,9 +149,5 @@ class Admin::UsersController < Admin::ApplicationController
     scope = scope.text_search(current_query)      if current_query.present?
     scope = scope.paginate(page: current_page) if wants.html? || wants.js? || wants.xml?
     scope
-  end
-
-  def setup_current_tab
-    set_current_tab('admin/users')
   end
 end

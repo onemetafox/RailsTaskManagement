@@ -27,7 +27,7 @@ class Api::Admin::GroupsController < Api::Admin::ApplicationController
     # rednder @group
   end
 
-  # POST /groups/lists
+  # POST /groups
   def index
     @group = Group.all
     render json: @group.to_json(include: [:users]), status: 200
@@ -66,8 +66,4 @@ class Api::Admin::GroupsController < Api::Admin::ApplicationController
     params.permit(:name, user_ids: [])
 
   end
-
-  # def setup_current_tab
-  #   set_current_tab('admin/groups')
-  # end
 end
