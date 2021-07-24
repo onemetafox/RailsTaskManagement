@@ -31,6 +31,7 @@ class Api::Admin::GroupsController < Api::Admin::ApplicationController
   def index
     @group = Group.all
     render json: @group.to_json(include: [:users]), status: 200
+    # render json: {success: true, data: group}
   end
 
   # POST /groups/:id
@@ -53,13 +54,20 @@ class Api::Admin::GroupsController < Api::Admin::ApplicationController
   def destroy
     @group = Group.find(params[:id])
     render json: @group.destroy
+    # @group.destroy
+
+    # render @group
   end
 
   protected
 
   def group_params
+    # params.require(:group).permit(:name, user_ids: [])
     params.permit(:name, user_ids: [])
 
   end
 
+  # def setup_current_tab
+  #   set_current_tab('admin/groups')
+  # end
 end
