@@ -14,40 +14,52 @@ class Api::Admin::GroupsController < Api::Admin::ApplicationController
   # POST /groups
   #----------------------------------------------------------------------------
   def create
-    @group.attributes = group_params
-    @group.save
+    # render json: group_params
+    render json: Group.create(group_params), status: 200
+    # @group.attributes = group_params
+    # @group = Group.create(group_params)
 
-    rednder @group
+    # if @group.save
+    #   render json: @group.to_json(include: [:users]), status: 200
+    # else
+    #   render json: {error: "Unable to create user"}, status: 500
+    # end
+    # rednder @group
   end
 
-  def lists
-    render json: $group
-    # render json: {success: true, data: group}
+  # POST /groups/lists
+  def index
+    @group = Group.all
+    render json: @group.to_json(include: [:users]), status: 200
+  end
+
+  # POST /groups/:id
+  def show
+    @group = Group.find_by(id: params[:id])
+    render json: @group.to_json(include: [:users]), status: 200
   end
 
   # PUT /groups/1
   #----------------------------------------------------------------------------
   def update
+    @group = Group.find(params[:id])
     @group.update(group_params)
 
-    render @group
+    render json: @group, status: 200
   end
 
   # DELETE /groups/1
   #----------------------------------------------------------------------------
   def destroy
-    @group.destroy
-
-    render @group
+    @group = Group.find(params[:id])
+    render json: @group.destroy
   end
 
   protected
 
   def group_params
-    params.require(:group).permit(:name, user_ids: [])
+    params.permit(:name, user_ids: [])
+
   end
 
-  # def setup_current_tab
-  #   set_current_tab('admin/groups')
-  # end
 end

@@ -165,6 +165,7 @@ Rails.application.routes.draw do
   end
 
   namespace :admin do
+    
     resources :groups
 
     resources :users do
@@ -216,68 +217,8 @@ Rails.application.routes.draw do
 
     namespace :admin do
 
-      resources :groups do
-        collection do
-          post :lists
-        end
-      end
+      resources :groups
 
-      # resources :users do
-      #   collection do
-      #     match :auto_complete, via: %i[get post]
-      #   end
-      #   member do
-      #     get :confirm
-      #     put :suspend
-      #     put :reactivate
-      #   end
-      # end
-
-      # resources :field_groups, except: %i[index show] do
-      #   collection do
-      #     post :sort
-      #   end
-      #   member do
-      #     get :confirm
-      #   end
-      # end
-
-      # resources :fields do
-      #   collection do
-      #     match :auto_complete, via: %i[get post]
-      #     get :options
-      #     get :redraw
-      #     post :sort
-      #     get :subform
-      #   end
-      # end
-
-      # resources :tags, except: [:show] do
-      #   member do
-      #     get :confirm
-      #   end
-      # end
-
-      # resources :fields, as: :custom_fields
-      # resources :fields, as: :core_fields
-
-      # resources :settings, only: :index
-      # resources :plugins,  only: :index
     end
-
-    # resources :users, id: /\d+/, except: %i[index destroy create] do
-    #   member do
-    #     get :avatar
-    #     get :password
-    #     match :upload_avatar, via: %i[put patch]
-    #     patch :change_password
-    #     post :redraw
-        
-    #   end
-    #   collection do
-    #     match :auto_complete, via: %i[get post]
-    #     post :sign_in
-    #   end
-    # end
   end
 end
