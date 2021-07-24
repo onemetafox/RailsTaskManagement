@@ -5,8 +5,9 @@ module Api
     def show; end
 
     def sign_in
-        render json: {user_params}
+        render user_params
     end
+
     def update
       current_user.update!(user_params)
       render :show
