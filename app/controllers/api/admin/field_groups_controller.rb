@@ -5,35 +5,48 @@
 # Fat Free CRM is freely distributable under the terms of MIT license.
 # See MIT-LICENSE file or http://www.opensource.org/licenses/mit-license.php
 #------------------------------------------------------------------------------
-class Admin::FieldGroupsController < Admin::ApplicationController
+class Api::Admin::FieldGroupsController < Api::Admin::ApplicationController
   helper 'admin/fields'
 
-  # GET /admin/field_groups/new
-  # GET /admin/field_groups/new.xml                                        AJAX
+  # GET /admin/field_groups/1
+  # GET /admin/field_groups/1.xml                                        AJAX
   #----------------------------------------------------------------------------
-  def new
-    @field_group = FieldGroup.new(klass_name: params[:klass_name])
-
-    respond_with(@field_group)
+  def show
+    @field_group = FieldGroup.find_by(id: params[:id])
+    render json: {data: @field_group.to_json, success: true}, status: 200
+    # respond_with(@field_group)
   end
 
   # GET /admin/field_groups/1/edit                                         AJAX
   #----------------------------------------------------------------------------
-  def edit
-    @field_group = FieldGroup.find(params[:id])
+  # def edit
+  #   @field_group = FieldGroup.find(params[:id])
 
-    @previous = FieldGroup.find_by_id(Regexp.last_match[1]) || Regexp.last_match[1].to_i if params[:previous].to_s =~ /(\d+)\z/
+  #   @previous = FieldGroup.find_by_id(Regexp.last_match[1]) || Regexp.last_match[1].to_i if params[:previous].to_s =~ /(\d+)\z/
 
-    respond_with(@field_group)
-  end
+  #   respond_with(@field_group)
+  # end
 
   # POST /admin/field_groups
   # POST /admin/field_groups.xml                                           AJAX
   #----------------------------------------------------------------------------
+
+  # POST /field_groups
+  def index
+    @field_group = FieldGroup.where(klass_name: params[:klass_name] )
+    render json: @field_group.to_json(include: [:fields]), status: 200
+    # render json: {success: true, data: group}
+  end
+
+
   def create
     @field_group = FieldGroup.create(field_group_params)
-
-    respond_with(@field_group)
+    if @field_group.save
+      render json: {data: @field_group, success: true}, status: 200
+    else
+      render json: {msg: @field_group.errors, success: false}, status: 500
+    end
+    # respond_with(@field_group)
   end
 
   # PUT /admin/field_groups/1
@@ -41,9 +54,13 @@ class Admin::FieldGroupsController < Admin::ApplicationController
   #----------------------------------------------------------------------------
   def update
     @field_group = FieldGroup.find(params[:id])
-    @field_group.update(field_group_params)
+    if @field_group.update(field_group_params)
+      render json: {data: @field_group, success: true}, status: 200
+    else
+      render json: {msg: @field_group.errors, success: true}, status: 500
+    end
 
-    respond_with(@field_group)
+    # respond_with(@field_group)
   end
 
   # DELETE /admin/field_groups/1
@@ -51,9 +68,13 @@ class Admin::FieldGroupsController < Admin::ApplicationController
   #----------------------------------------------------------------------------
   def destroy
     @field_group = FieldGroup.find(params[:id])
-    @field_group.destroy
+    if @field_group.destroy
+      render json: {data: @field_group, success: true}, status: 200
+    else
+      render json: {msg: @field_group.errors, success: false}, status: 500
+    end
 
-    respond_with(@field_group)
+    # respond_with(@field_group)
   end
 
   # POST /admin/field_groups/sort
@@ -71,14 +92,14 @@ class Admin::FieldGroupsController < Admin::ApplicationController
 
   # GET /admin/field_groups/1/confirm                                      AJAX
   #----------------------------------------------------------------------------
-  def confirm
-    @field_group = FieldGroup.find(params[:id])
-  end
+  # def confirm
+  #   @field_group = FieldGroup.find(params[:id])
+  # end
 
   protected
 
   def field_group_params
-    params.require(:field_group).permit(
+    params.permit(
       :name,
       :label,
       :position,

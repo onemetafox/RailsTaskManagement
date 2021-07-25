@@ -5,30 +5,31 @@
 # Fat Free CRM is freely distributable under the terms of MIT license.
 # See MIT-LICENSE file or http://www.opensource.org/licenses/mit-license.php
 #------------------------------------------------------------------------------
-class Admin::FieldsController < Admin::ApplicationController
-  before_action :setup_current_tab, only: [:index]
-  load_resource except: %i[create subform]
+class Api::Admin::FieldsController < Api::Admin::ApplicationController
+  # before_action :setup_current_tab, only: [:index]
+  # load_resource except: %i[create subform]
 
   # GET /fields
   # GET /fields.xml                                                      HTML
   #----------------------------------------------------------------------------
-  def index
-  end
+  # def index
+  # end
 
   # GET /fields/1
   # GET /fields/1.xml                                                    HTML
   #----------------------------------------------------------------------------
   def show
-    respond_with(@field)
+    # @field = Field.find()
+    # respond_with(@field)
   end
 
   # GET /fields/new
   # GET /fields/new.xml                                                  AJAX
   #----------------------------------------------------------------------------
-  def new
-    @field = Field.new
-    respond_with(@field)
-  end
+  # def new
+  #   @field = Field.new
+  #   respond_with(@field)
+  # end
 
   # GET /fields/1/edit                                                   AJAX
   #----------------------------------------------------------------------------
@@ -51,8 +52,13 @@ class Admin::FieldsController < Admin::ApplicationController
       else
         Field.new(field_params).tap(&:valid?)
       end
+    if @field.save
+      render json: {data: @field, success: true}, status: 200
+    else
+      render json: {msg: @field.errors, success: false}, status: 500
+    end
 
-    respond_with(@field)
+    # respond_with(@field)
   end
 
   # PUT /fields/1
@@ -117,7 +123,7 @@ class Admin::FieldsController < Admin::ApplicationController
     params[:field].permit!
   end
 
-  def setup_current_tab
-    set_current_tab('admin/fields')
-  end
+  # def setup_current_tab
+  #   set_current_tab('admin/fields')
+  # end
 end

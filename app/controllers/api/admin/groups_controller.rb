@@ -44,7 +44,7 @@ class Api::Admin::GroupsController < Api::Admin::ApplicationController
     if @group.update(group_params)
       render json: @group, status: 200
     else
-      render json: @group.errors, status 500
+      render json: @group.errors, status: 500
     end
 
     

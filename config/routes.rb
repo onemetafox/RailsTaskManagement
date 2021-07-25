@@ -219,10 +219,31 @@ Rails.application.routes.draw do
 
       resources :groups
 
-      resources :users do
+      resources :tags
+
+      resources :field_groups do
         collection do
-          match :auto_complete, via: %i[get post]
+          post :sort
         end
+        member do
+          get :confirm
+        end
+      end
+
+      resources :fields do
+        collection do
+          # match :auto_complete, via: %i[get post]
+          get :options
+          get :redraw
+          post :sort
+          get :subform
+        end
+      end
+      
+      resources :users do
+        # collection do
+        #   match :auto_complete, via: %i[get post]
+        # end
         member do
           get :confirm
           put :suspend
