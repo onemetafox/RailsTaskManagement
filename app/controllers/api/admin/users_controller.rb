@@ -31,9 +31,9 @@ class Api::Admin::UsersController < Api::Admin::ApplicationController
   # GET /admin/users/new
   # GET /admin/users/new.xml                                               AJAX
   #----------------------------------------------------------------------------
-  def new
-    respond_with(@user)
-  end
+  # def new
+  #   respond_with(@user)
+  # end
 
   # GET /admin/users/1/edit                                                AJAX
   #----------------------------------------------------------------------------
@@ -48,10 +48,13 @@ class Api::Admin::UsersController < Api::Admin::ApplicationController
   #----------------------------------------------------------------------------
   def create
     @user = User.new(user_params)
-    @user.suspend_if_needs_approval
-    @user.save
 
-    render json: @user
+    @user.suspend_if_needs_approval
+    if @user.save
+      render json: @user, status: 200
+    else
+      render json: @user.errors, status: 500
+    end
   end
 
   # PUT /admin/users/1
@@ -60,24 +63,33 @@ class Api::Admin::UsersController < Api::Admin::ApplicationController
   def update
     @user = User.find(params[:id])
     @user.attributes = user_params
-    @user.save
-
-    respond_with(@user)
+    if @user.save
+      render json: @user, status: 200
+    else
+      render json: @user.errors, status: 500
+    end
   end
 
   # GET /admin/users/1/confirm                                             AJAX
   #----------------------------------------------------------------------------
   def confirm
-    respond_with(@user)
+    @user = User.find_by_id(params[:id])
+    render json: @user, status: 200
   end
 
   # DELETE /admin/users/1
   # DELETE /admin/users/1.xml                                              AJAX
   #----------------------------------------------------------------------------
   def destroy
-    flash[:warning] = t(:msg_cant_delete_user, @user.full_name) unless @user.destroyable?(current_user) && @user.destroy
+    @user = User.find_by_id(params[:id])
+    if @user.destroy
+      render json: @user.destroy, status: 200
+    else
+      render json: @user.errors, status: 500
+    end
+    # flash[:warning] = t(:msg_cant_delete_user, @user.full_name) unless @user.destroyable?(current_user) && @user.destroy
 
-    respond_with(@user)
+    # respond_with(@user)
   end
 
   # POST /users/auto_complete/query                                        AJAX
@@ -88,18 +100,18 @@ class Api::Admin::UsersController < Api::Admin::ApplicationController
   # PUT /admin/users/1/suspend.xml                                         AJAX
   #----------------------------------------------------------------------------
   def suspend
-    @user.update_attribute(:suspended_at, Time.now) if @user != current_user
-
-    respond_with(@user)
+    @user = User.find_by_id(params[:id])
+    @user.update_attribute(:suspended_at, Time.now) 
+    render json: @user, status: 200
   end
 
   # PUT /admin/users/1/reactivate
   # PUT /admin/users/1/reactivate.xml                                      AJAX
   #----------------------------------------------------------------------------
   def reactivate
+    @user = User.find_by_id(params[:id])
     @user.update_attribute(:suspended_at, nil)
-
-    respond_with(@user)
+    render json: @user, status: 200
   end
 
   protected
@@ -129,7 +141,7 @@ class Api::Admin::UsersController < Api::Admin::ApplicationController
       :skype,
       :password,
       :password_confirmation,
-      group_ids: []
+      group_ids: [:id]
     )
   end
 

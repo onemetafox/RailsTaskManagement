@@ -15,16 +15,12 @@ class Api::Admin::GroupsController < Api::Admin::ApplicationController
   #----------------------------------------------------------------------------
   def create
     # render json: group_params
-    render json: Group.create(group_params), status: 200
-    # @group.attributes = group_params
-    # @group = Group.create(group_params)
-
-    # if @group.save
-    #   render json: @group.to_json(include: [:users]), status: 200
-    # else
-    #   render json: {error: "Unable to create user"}, status: 500
-    # end
-    # rednder @group
+    @group = Group.new(group_params)
+    if @group.save
+      render json: @group, status: 200
+    else
+      render json: @group.errors, status: 500
+    end
   end
 
   # POST /groups
@@ -44,9 +40,14 @@ class Api::Admin::GroupsController < Api::Admin::ApplicationController
   #----------------------------------------------------------------------------
   def update
     @group = Group.find(params[:id])
-    @group.update(group_params)
+    
+    if @group.update(group_params)
+      render json: @group, status: 200
+    else
+      render json: @group.errors, status 500
+    end
 
-    render json: @group, status: 200
+    
   end
 
   # DELETE /groups/1
