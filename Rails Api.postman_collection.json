@@ -354,7 +354,7 @@
 							]
 						},
 						"url": {
-							"raw": "localhost:3000/api/admin/groups/1",
+							"raw": "localhost:3000/api/admin/groups/11",
 							"host": [
 								"localhost"
 							],
@@ -363,7 +363,7 @@
 								"api",
 								"admin",
 								"groups",
-								"1"
+								"11"
 							],
 							"query": [
 								{
@@ -677,76 +677,82 @@
 							"mode": "formdata",
 							"formdata": [
 								{
-									"key": "field_group_id",
+									"key": "field[field_group_id]",
 									"value": "6"
 								},
 								{
-									"key": "label",
+									"key": "field[label]",
 									"value": "Add Field Test"
 								},
 								{
-									"key": "as",
-									"value": "radio_buutton",
+									"key": "field[as]",
+									"value": "string",
 									"description": "Short Answer=>string, Long Answer=>text, Email, Address=>email, Url=>url, Phone Number=>tel. Select List=>select, Radio Buttons=>raio_button, CheckBox List=>check_boxes, Checkbox=>boolean, Date=>date, Date & Time=> datetime, Number(Decimal)=>decimal, Number(Integer)=>integer, Number(Floating Point)=>float, Date Pair=>date_pair, Date & Time Pair=>datetime_pair"
 								},
 								{
-									"key": "collection_string",
+									"key": "field[collection_string]",
 									"value": null,
-									"description": "+radio_button,+boolean"
+									"description": "+radio_button,+boolean",
+									"disabled": true
 								},
 								{
-									"key": "required",
+									"key": "field[required]",
 									"value": "1",
 									"description": "0=> unrequired, 1=> required"
 								},
 								{
-									"key": "disabled",
+									"key": "field[disabled]",
 									"value": "0",
 									"description": "0=> enable, 1=>disable"
 								},
 								{
-									"key": "hit",
-									"value": null
+									"key": "field[hint]",
+									"value": "1"
 								},
 								{
-									"key": "placeholder",
-									"value": null,
+									"key": "field[placeholder]",
+									"value": "2",
 									"description": "-datetime,-decimal"
 								},
 								{
-									"key": "minlength",
+									"key": "field[minlength]",
 									"value": "0",
 									"description": "-radio_button,-datetime,-decimal"
 								},
 								{
-									"key": "maxlength",
+									"key": "field[maxlength]",
 									"value": "100",
 									"description": "-radio_button,-datetime,-decimal"
 								},
 								{
 									"key": "pair[0][hint]",
 									"value": null,
-									"description": "datetime_pair"
+									"description": "datetime_pair",
+									"disabled": true
 								},
 								{
 									"key": "pair[0][required]",
 									"value": "0",
-									"description": "datetime_pair"
+									"description": "datetime_pair",
+									"disabled": true
 								},
 								{
 									"key": "pair[0][disabled]",
 									"value": "0",
-									"description": "datetime_pair"
+									"description": "datetime_pair",
+									"disabled": true
 								},
 								{
 									"key": "pair[0][id]",
 									"value": null,
-									"description": "datetime_pair"
+									"description": "datetime_pair",
+									"disabled": true
 								},
 								{
 									"key": "pair[1][id]",
 									"value": null,
-									"description": "datetime_pair"
+									"description": "datetime_pair",
+									"disabled": true
 								}
 							]
 						},
@@ -850,6 +856,110 @@
 									"description": "datetime_pair",
 									"disabled": true
 								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "admin field get one",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/api/admin/fields/3",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"admin",
+								"fields",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "admin field update",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "field[field_group_id]",
+									"value": "6"
+								},
+								{
+									"key": "field[label]",
+									"value": "Add Field Test1"
+								},
+								{
+									"key": "field[as]",
+									"value": "string",
+									"description": "Short Answer=>string, Long Answer=>text, Email, Address=>email, Url=>url, Phone Number=>tel. Select List=>select, Radio Buttons=>raio_button, CheckBox List=>check_boxes, Checkbox=>boolean, Date=>date, Date & Time=> datetime, Number(Decimal)=>decimal, Number(Integer)=>integer, Number(Floating Point)=>float, Date Pair=>date_pair, Date & Time Pair=>datetime_pair"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:3000/api/admin/fields/3",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"admin",
+								"fields",
+								"3"
+							],
+							"query": [
+								{
+									"key": "field[field_group_id]",
+									"value": "6",
+									"disabled": true
+								},
+								{
+									"key": "field[label]",
+									"value": "Add Field Test",
+									"disabled": true
+								},
+								{
+									"key": "field[as]",
+									"value": "string",
+									"description": "Short Answer=>string, Long Answer=>text, Email, Address=>email, Url=>url, Phone Number=>tel. Select List=>select, Radio Buttons=>raio_button, CheckBox List=>check_boxes, Checkbox=>boolean, Date=>date, Date & Time=> datetime, Number(Decimal)=>decimal, Number(Integer)=>integer, Number(Floating Point)=>float, Date Pair=>date_pair, Date & Time Pair=>datetime_pair",
+									"disabled": true
+								},
+								{
+									"key": "",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "admin field delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/api/admin/fields/3",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"admin",
+								"fields",
+								"3"
 							]
 						}
 					},

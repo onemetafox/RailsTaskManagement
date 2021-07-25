@@ -53,7 +53,7 @@ class CustomField < Field
   delegate :table_name, to: :klass
 
   after_validation :update_column, on: :update
-  before_create :add_column
+  # before_create :add_column
   after_create :add_ransack_translation
 
   SAFE_DB_TRANSITIONS = {

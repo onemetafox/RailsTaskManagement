@@ -94,6 +94,18 @@ class Api::ApiController < ActionController::API
     Setting.clear_cache!
   end
 
+  def find_class(asset)
+    Rails.application.eager_load! unless Rails.application.config.cache_classes
+    classes = ActiveRecord::Base.descendants.map(&:name)
+    puts "User".safe_constantize
+    find = classes.find { |m| m == asset.classify }
+    if find
+      find.safe_constantize
+    else
+      raise "Unknown resource"
+    end
+  end
+
   def cors_preflight_check
     if request.method == 'OPTIONS'
       headers['Access-Control-Allow-Origin'] = '*'

@@ -230,16 +230,8 @@ Rails.application.routes.draw do
         end
       end
 
-      resources :fields do
-        collection do
-          # match :auto_complete, via: %i[get post]
-          get :options
-          get :redraw
-          post :sort
-          get :subform
-        end
-      end
-      
+      resources :fields 
+
       resources :users do
         # collection do
         #   match :auto_complete, via: %i[get post]
