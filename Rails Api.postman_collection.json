@@ -1,0 +1,1011 @@
+{
+	"info": {
+		"_postman_id": "eee6367e-ef32-41a6-8e43-c066cb69a7ce",
+		"name": "Rails Api",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "admin-user",
+			"item": [
+				{
+					"name": "admin user search",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "query",
+								"value": "ben",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "query",
+									"value": "heather",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:3000/api/admin/users",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"admin",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "admin user get one",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/api/admin/users/2",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"admin",
+								"users",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "admin user create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "username",
+									"value": "caption",
+									"description": "validation",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "caption@admin.com",
+									"description": "validation",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "123",
+									"type": "text"
+								},
+								{
+									"key": "password_confirmation",
+									"value": "123",
+									"type": "text"
+								},
+								{
+									"key": "admin",
+									"value": "1",
+									"description": "0=> normol user, 1=> admin user",
+									"type": "text"
+								},
+								{
+									"key": "first_name",
+									"value": "Admin",
+									"type": "text"
+								},
+								{
+									"key": "last_name",
+									"value": "User",
+									"type": "text"
+								},
+								{
+									"key": "title",
+									"value": "project Manager",
+									"type": "text"
+								},
+								{
+									"key": "company",
+									"value": "Company Of Travel",
+									"type": "text"
+								},
+								{
+									"key": "group_ids[]",
+									"value": "11",
+									"type": "text"
+								},
+								{
+									"key": "group_ids[]",
+									"value": "12",
+									"type": "text"
+								},
+								{
+									"key": "commit",
+									"value": "Save User",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:3000/api/admin/users",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"admin",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "admin user update",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "username",
+									"value": "UpdateUser113",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "caption1@gmail.com",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:3000/api/admin/users/9",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"admin",
+								"users",
+								"9"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "admin user delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/api/admin/users/9",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"admin",
+								"users",
+								"9"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "admin user suspend",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/api/admin/users/10/suspend",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"admin",
+								"users",
+								"10",
+								"suspend"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "admin user reactivate",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/api/admin/users/10/reactivate",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"admin",
+								"users",
+								"10",
+								"reactivate"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "admin-group",
+			"item": [
+				{
+					"name": "admin group get all",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/api/admin/groups",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"admin",
+								"groups"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "admin group update",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "id",
+									"value": "10",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "name",
+									"value": "update test",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:3000/api/admin/groups/10",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"admin",
+								"groups",
+								"10"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "10",
+									"disabled": true
+								},
+								{
+									"key": "name",
+									"value": "update test",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "admin group get one",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "id",
+									"value": "2",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:3000/api/admin/groups/1",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"admin",
+								"groups",
+								"1"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "1",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "admin group creat",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "test3 group",
+									"type": "text"
+								},
+								{
+									"key": "user_ids[]",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "user_ids[]",
+									"value": "2",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "user_ids[]",
+									"value": "5",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:3000/api/admin/groups",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"admin",
+								"groups"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "test group",
+									"disabled": true
+								},
+								{
+									"key": "user_ids",
+									"value": "[1,2,3,4]",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "admin group delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/api/admin/groups/10",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"admin",
+								"groups",
+								"10"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "admin-field_group",
+			"item": [
+				{
+					"name": "admin field_group create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "klass_name",
+									"value": "Account",
+									"type": "text"
+								},
+								{
+									"key": "label",
+									"value": "test field group",
+									"type": "text"
+								},
+								{
+									"key": "tag_id",
+									"value": "6",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:3000/api/admin/field_groups",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"admin",
+								"field_groups"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "admin field_group update",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "klass_name",
+									"value": "Account",
+									"type": "text"
+								},
+								{
+									"key": "label",
+									"value": "label1",
+									"type": "text"
+								},
+								{
+									"key": "tag_id",
+									"value": "3",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:3000/api/admin/field_groups/2",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"admin",
+								"field_groups",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "admin field_group delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/api/admin/field_groups/1",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"admin",
+								"field_groups",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "admin field_group search with klass_name",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "klass_name",
+									"value": "Account",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:3000/api/admin/field_groups",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"admin",
+								"field_groups"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "admin filed_group get one",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/api/admin/field_groups/3",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"admin",
+								"field_groups",
+								"3"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "admin-field",
+			"item": [
+				{
+					"name": "admin field create",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "",
+								"value": "6",
+								"equals": true
+							},
+							{
+								"key": "label",
+								"value": "Add Field Test",
+								"equals": true
+							},
+							{
+								"key": "as",
+								"value": "radio_buutton",
+								"equals": true,
+								"description": "Short Answer=>string, Long Answer=>text, Email, Address=>email, Url=>url, Phone Number=>tel. Select List=>select, Radio Buttons=>raio_button, CheckBox List=>check_boxes, Checkbox=>boolean, Date=>date, Date & Time=> datetime, Number(Decimal)=>decimal, Number(Integer)=>integer, Number(Floating Point)=>float, Date Pair=>date_pair, Date & Time Pair=>datetime_pair"
+							},
+							{
+								"key": "collection_string",
+								"value": null,
+								"equals": false,
+								"description": "+radio_button,+boolean"
+							},
+							{
+								"key": "required",
+								"value": "1",
+								"equals": true,
+								"description": "0=> unrequired, 1=> required"
+							},
+							{
+								"key": "disabled",
+								"value": "0",
+								"equals": true,
+								"description": "0=> enable, 1=>disable"
+							},
+							{
+								"key": "hit",
+								"value": null,
+								"equals": false
+							},
+							{
+								"key": "placeholder",
+								"value": null,
+								"equals": false,
+								"description": "-datetime,-decimal"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "field_group_id",
+									"value": "6"
+								},
+								{
+									"key": "label",
+									"value": "Add Field Test"
+								},
+								{
+									"key": "as",
+									"value": "radio_buutton",
+									"description": "Short Answer=>string, Long Answer=>text, Email, Address=>email, Url=>url, Phone Number=>tel. Select List=>select, Radio Buttons=>raio_button, CheckBox List=>check_boxes, Checkbox=>boolean, Date=>date, Date & Time=> datetime, Number(Decimal)=>decimal, Number(Integer)=>integer, Number(Floating Point)=>float, Date Pair=>date_pair, Date & Time Pair=>datetime_pair"
+								},
+								{
+									"key": "collection_string",
+									"value": null,
+									"description": "+radio_button,+boolean"
+								},
+								{
+									"key": "required",
+									"value": "1",
+									"description": "0=> unrequired, 1=> required"
+								},
+								{
+									"key": "disabled",
+									"value": "0",
+									"description": "0=> enable, 1=>disable"
+								},
+								{
+									"key": "hit",
+									"value": null
+								},
+								{
+									"key": "placeholder",
+									"value": null,
+									"description": "-datetime,-decimal"
+								},
+								{
+									"key": "minlength",
+									"value": "0",
+									"description": "-radio_button,-datetime,-decimal"
+								},
+								{
+									"key": "maxlength",
+									"value": "100",
+									"description": "-radio_button,-datetime,-decimal"
+								},
+								{
+									"key": "pair[0][hint]",
+									"value": null,
+									"description": "datetime_pair"
+								},
+								{
+									"key": "pair[0][required]",
+									"value": "0",
+									"description": "datetime_pair"
+								},
+								{
+									"key": "pair[0][disabled]",
+									"value": "0",
+									"description": "datetime_pair"
+								},
+								{
+									"key": "pair[0][id]",
+									"value": null,
+									"description": "datetime_pair"
+								},
+								{
+									"key": "pair[1][id]",
+									"value": null,
+									"description": "datetime_pair"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:3000/api/admin/fields/",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"admin",
+								"fields",
+								""
+							],
+							"query": [
+								{
+									"key": "field_group_id",
+									"value": "6",
+									"disabled": true
+								},
+								{
+									"key": "label",
+									"value": "Add Field Test",
+									"disabled": true
+								},
+								{
+									"key": "as",
+									"value": "radio_buutton",
+									"description": "Short Answer=>string, Long Answer=>text, Email, Address=>email, Url=>url, Phone Number=>tel. Select List=>select, Radio Buttons=>raio_button, CheckBox List=>check_boxes, Checkbox=>boolean, Date=>date, Date & Time=> datetime, Number(Decimal)=>decimal, Number(Integer)=>integer, Number(Floating Point)=>float, Date Pair=>date_pair, Date & Time Pair=>datetime_pair",
+									"disabled": true
+								},
+								{
+									"key": "collection_string",
+									"value": null,
+									"description": "+radio_button,+boolean",
+									"disabled": true
+								},
+								{
+									"key": "required",
+									"value": "1",
+									"description": "0=> unrequired, 1=> required",
+									"disabled": true
+								},
+								{
+									"key": "disabled",
+									"value": "0",
+									"description": "0=> enable, 1=>disable",
+									"disabled": true
+								},
+								{
+									"key": "hit",
+									"value": null,
+									"disabled": true
+								},
+								{
+									"key": "placeholder",
+									"value": null,
+									"description": "-datetime,-decimal",
+									"disabled": true
+								},
+								{
+									"key": "minlength",
+									"value": "0",
+									"description": "-radio_button,-datetime,-decimal",
+									"disabled": true
+								},
+								{
+									"key": "maxlength",
+									"value": "100",
+									"description": "-radio_button,-datetime,-decimal",
+									"disabled": true
+								},
+								{
+									"key": "pair[0][hint]",
+									"value": null,
+									"description": "datetime_pair",
+									"disabled": true
+								},
+								{
+									"key": "pair[0][required]",
+									"value": "0",
+									"description": "datetime_pair",
+									"disabled": true
+								},
+								{
+									"key": "pair[0][disabled]",
+									"value": "0",
+									"description": "datetime_pair",
+									"disabled": true
+								},
+								{
+									"key": "pair[0][id]",
+									"value": null,
+									"description": "datetime_pair",
+									"disabled": true
+								},
+								{
+									"key": "pair[1][id]",
+									"value": null,
+									"description": "datetime_pair",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "admin-tag",
+			"item": [
+				{
+					"name": "admin tag get all",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/api/admin/tags",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"admin",
+								"tags"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "admin tag update",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "update tag name",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:3000/api/admin/tags/1",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"admin",
+								"tags",
+								"1"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "update tag",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "admin tag create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "test tag",
+									"type": "text"
+								},
+								{
+									"key": "taggings_count",
+									"value": "",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:3000/api/admin/tags",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"admin",
+								"tags"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "test tag",
+									"disabled": true
+								},
+								{
+									"key": "",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "admin tag delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/api/admin/tags/1",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"admin",
+								"tags",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "API TEST ",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/api/status",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"status"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
