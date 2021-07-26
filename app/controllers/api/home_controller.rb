@@ -6,11 +6,11 @@
 # See MIT-LICENSE file or http://www.opensource.org/licenses/mit-license.php
 #------------------------------------------------------------------------------
 class Api::HomeController < Api::ApiController
-  skip_before_action :authenticate_user!, only: %i[timezone]
-  before_action :set_current_tab, only: :index
+  # before_action :set_current_tab, only: :index
 
   #----------------------------------------------------------------------------
   def index
+    puts current_user
     @activities = get_activities
     @my_tasks = Task.visible_on_dashboard(current_user).includes(:user, :asset).by_due_at
     @my_opportunities = Opportunity.visible_on_dashboard(current_user).includes(:account, :user, :tags).by_closes_on.by_amount
@@ -165,4 +165,5 @@ class Api::HomeController < Api::ApiController
       %w[zero one two].index(words.first).send(words.last) if %w[one two].include?(words.first) && %w[hour day days week weeks month].include?(words.last)
     end
   end
+
 end

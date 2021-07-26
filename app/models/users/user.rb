@@ -47,8 +47,11 @@
 #
 
 class User < ActiveRecord::Base
+  # include Devise::JWT::RevocationStrategies::JTIMatcher
+
   devise :database_authenticatable, :registerable, :confirmable,
          :encryptable, :recoverable, :rememberable, :trackable
+         # , :jwt_authenticatable, jwt_revocation_strategy: self
   before_create :suspend_if_needs_approval
 
   has_one :avatar, as: :entity, dependent: :destroy  # Personal avatar.
@@ -204,6 +207,11 @@ class User < ActiveRecord::Base
         where(conditions.to_h).where(["lower(username) = :value OR lower(email) = :value", { value: login.downcase }]).first
       end
     end
+  end
+  def generate_jwt
+    JWT.encode({ id: id,
+                exp: 1.hours.from_now.to_i },
+               Rails.application.secrets.secret_key_base)
   end
 
   ActiveSupport.run_load_hooks(:fat_free_crm_user, self)

@@ -92,6 +92,15 @@ class Api::Admin::UsersController < Api::Admin::ApplicationController
     # respond_with(@user)
   end
 
+  def delete
+    @user = User.find_by_id(params[:id])
+    if @user.destroy
+      render json: @user.destroy, status: 200
+    else
+      render json: @user.errors, status: 500
+    end
+  end
+
   # POST /users/auto_complete/query                                        AJAX
   #----------------------------------------------------------------------------
   # Handled by Admin::ApplicationController :auto_complete

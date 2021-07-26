@@ -6,27 +6,15 @@
 # See MIT-LICENSE file or http://www.opensource.org/licenses/mit-license.php
 #------------------------------------------------------------------------------
 class Api::Admin::ApplicationController < Api::ApiController
+  
   # before_action :require_admin_user
-
-  # layout "admin/application"
-  # helper "admin/field_groups"
-
-  # Autocomplete handler for all admin controllers.
-  #----------------------------------------------------------------------------
-  def auto_complete
-    @query = params[:term]
-    @auto_complete = klass.text_search(@query).limit(10)
-    render partial: 'auto_complete'
-  end
 
   private
 
-  #----------------------------------------------------------------------------
   def require_admin_user
     authenticate_user!
     unless current_user&.admin?
-      flash[:notice] = t(:msg_require_admin)
-      redirect_to root_path
+      render json: {success: false, msg: "You don't have admin role"}, status: 200
     end
   end
 end

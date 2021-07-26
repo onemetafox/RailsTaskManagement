@@ -1,49 +1,23 @@
 class Api::ApiController < ActionController::API
-  # include Api::Concerns::ActAsApiRequest
-  # include Pundit
-  # include DeviseTokenAuth::Concerns::SetUserByToken
-
-  # after_action :verify_authorized, except: :index
-  # after_action :verify_policy_scoped, only: :index
-
-  # before_action :authenticate_user!, except: :status
-  # skip_after_action :verify_authorized, only: :status
  
-  # ----------------- application controller part ---------------------
-
   include ActionController::Helpers
+  
   before_action :configure_devise_parameters, if: :devise_controller?
   # before_action :authenticate_user!
   before_action :set_paper_trail_whodunnit
-  before_action :set_context
-  before_action :clear_setting_cache
   before_action :cors_preflight_check
-  # before_action { hook(:app_before_filter, self) }
-  # after_action { hook(:app_after_filter, self) }
-  after_action :cors_set_access_control_headers
-
-  helper_method :called_from_index_page?, :called_from_landing_page?
-  helper_method :klass
-
-  respond_to :html, only: %i[index show auto_complete]
-  respond_to :js
-  respond_to :json, :xml, except: :edit
-  respond_to :atom, :csv, :rss, :xls, only: :index
-
-  rescue_from ActiveRecord::RecordNotFound, with: :respond_to_not_found
-  rescue_from CanCan::AccessDenied,         with: :respond_to_access_denied
-
-  include ERB::Util # to give us h and j methods
-
-  #----------------------  application controller part  ---------------------
-
-
   
+  after_action :cors_set_access_control_headers
+  
+  helper_method :klass
+  
+  respond_to :json
 
-
+  rescue_from CanCan::AccessDenied,         with: :respond_to_access_denied
   rescue_from ActiveRecord::RecordNotFound,        with: :render_not_found
   rescue_from ActiveRecord::RecordInvalid,         with: :render_record_invalid
   rescue_from ActionController::ParameterMissing,  with: :render_parameter_missing
+
 
   def status
     render json: {online: true}
@@ -65,15 +39,7 @@ class Api::ApiController < ActionController::API
     logger.info { exception } # for logging
     render json: { error: I18n.t('api.errors.missing_param') }, status: :unprocessable_entity
   end
-  # -----------------------  application controller part  --------------------
-  def set_context
-    Time.zone = ActiveSupport::TimeZone[session[:timezone_offset]] if session[:timezone_offset]
-    if current_user.present? && (locale = current_user.preference[:locale]).present?
-      I18n.locale = locale
-    elsif Setting.locale.present?
-      I18n.locale = Setting.locale
-    end
-  end
+  
   def klass
     @klass ||= controller_name.classify.constantize
   end
@@ -89,21 +55,6 @@ class Api::ApiController < ActionController::API
     # end
     # @current_query = session[:"#{controller_name}_current_query"] = query
     @current_query = query
-  end
-  def clear_setting_cache
-    Setting.clear_cache!
-  end
-
-  def find_class(asset)
-    Rails.application.eager_load! unless Rails.application.config.cache_classes
-    classes = ActiveRecord::Base.descendants.map(&:name)
-    puts "User".safe_constantize
-    find = classes.find { |m| m == asset.classify }
-    if find
-      find.safe_constantize
-    else
-      raise "Unknown resource"
-    end
   end
 
   def cors_preflight_check
@@ -122,5 +73,18 @@ class Api::ApiController < ActionController::API
     headers['Access-Control-Allow-Headers'] = 'Origin, Content-Type, Accept, Authorization, Token'
     headers['Access-Control-Max-Age'] = "1728000"
   end
-  # ----------------------  application controller part  -----------------------
+
+  # def authenticate_user
+  #   if request.headers['Authorization'].present?
+  #     authenticate_or_request_with_http_token do |token|
+  #       begin
+  #         jwt_payload = JWT.decode(token, Rails.application.secrets.secret_key_base).first
+
+  #         @current_user_id = jwt_payload['id']
+  #       rescue JWT::ExpiredSignature, JWT::VerificationError, JWT::DecodeError
+  #         head :unauthorized
+  #       end
+  #     end
+  #   end
+  # end
 end

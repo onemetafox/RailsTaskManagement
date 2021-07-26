@@ -7,6 +7,7 @@
 #------------------------------------------------------------------------------
 class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
+  # protect_from_forgery with: :null_session
 
   before_action :configure_devise_parameters, if: :devise_controller?
   before_action :authenticate_user!
@@ -255,6 +256,20 @@ class ApplicationController < ActionController::Base
   def configure_devise_parameters
     devise_parameter_sanitizer.permit(:sign_up) do |user_params|
       user_params.permit(:username, :email, :password, :password_confirmation)
+    end
+  end
+
+  def authenticate_user
+    if request.headers['Authorization'].present?
+      authenticate_or_request_with_http_token do |token|
+        begin
+          jwt_payload = JWT.decode(token, Rails.application.secrets.secret_key_base).first
+
+          @current_user_id = jwt_payload['id']
+        rescue JWT::ExpiredSignature, JWT::VerificationError, JWT::DecodeError
+          head :unauthorized
+        end
+      end
     end
   end
 

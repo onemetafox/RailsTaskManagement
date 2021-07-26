@@ -214,6 +214,25 @@ Rails.application.routes.draw do
   namespace :api, defaults: { format: :json }  do
 
     get :status, to: 'api#status'
+    get '/home/index', as: :index
+    get '/api/home/options',  as: :options
+    get '/api/home/toggle',   as: :toggle
+    match '/api/home/timeline', as: :timeline, via: %i[get put post]
+    match '/api/home/timezone', as: :timezone, via: %i[get put post]
+    post '/api/home/redraw', as: :redraw
+
+    devise_for :users, controllers: { registrations: 'registrations',
+                                    sessions: 'sessions',
+                                    passwords: 'passwords',
+                                    confirmations: 'confirmations' }
+
+    devise_scope :user do
+      resources :users, only: %i[index show] do
+        collection do
+          get :opportunities_overview
+        end
+      end
+    end
 
     namespace :admin do
 
@@ -238,8 +257,10 @@ Rails.application.routes.draw do
         # end
         member do
           get :confirm
-          put :suspend
-          put :reactivate
+          post :suspend
+          post :reactivate
+          post :delete
+          post :update
         end
       end
 
