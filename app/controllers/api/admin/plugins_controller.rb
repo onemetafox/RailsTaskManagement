@@ -16,10 +16,4 @@ class Api::Admin::PluginsController < Api::Admin::ApplicationController
 
     respond_with(@plugins)
   end
-
-  protected
-
-  # def setup_current_tab
-  #   set_current_tab('admin/plugins')
-  # end
 end

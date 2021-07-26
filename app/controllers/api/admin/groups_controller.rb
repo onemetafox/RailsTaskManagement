@@ -55,16 +55,11 @@ class Api::Admin::GroupsController < Api::Admin::ApplicationController
   def delete
     @group = Group.find(params[:id])
     render json: @group.destroy
-    # @group.destroy
-
-    # render @group
   end
 
   protected
 
   def group_params
-    # params.require(:group).permit(:name, user_ids: [])
     params.permit(:name, user_ids: [])
-
   end
 end

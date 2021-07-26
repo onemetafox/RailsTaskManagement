@@ -14,28 +14,12 @@ class Api::Admin::FieldGroupsController < Api::Admin::ApplicationController
   def show
     @field_group = FieldGroup.find_by(id: params[:id])
     render json: {data: @field_group.to_json, success: true}, status: 200
-    # respond_with(@field_group)
   end
-
-  # GET /admin/field_groups/1/edit                                         AJAX
-  #----------------------------------------------------------------------------
-  # def edit
-  #   @field_group = FieldGroup.find(params[:id])
-
-  #   @previous = FieldGroup.find_by_id(Regexp.last_match[1]) || Regexp.last_match[1].to_i if params[:previous].to_s =~ /(\d+)\z/
-
-  #   respond_with(@field_group)
-  # end
-
-  # POST /admin/field_groups
-  # POST /admin/field_groups.xml                                           AJAX
-  #----------------------------------------------------------------------------
 
   # POST /field_groups
   def index
     @field_group = FieldGroup.where(klass_name: params[:klass_name] )
     render json: @field_group.to_json(include: [:fields]), status: 200
-    # render json: {success: true, data: group}
   end
 
 
@@ -46,7 +30,6 @@ class Api::Admin::FieldGroupsController < Api::Admin::ApplicationController
     else
       render json: {msg: @field_group.errors, success: false}, status: 500
     end
-    # respond_with(@field_group)
   end
 
   # PUT /admin/field_groups/1
@@ -59,8 +42,6 @@ class Api::Admin::FieldGroupsController < Api::Admin::ApplicationController
     else
       render json: {msg: @field_group.errors, success: true}, status: 500
     end
-
-    # respond_with(@field_group)
   end
 
   # DELETE /admin/field_groups/1
@@ -73,8 +54,6 @@ class Api::Admin::FieldGroupsController < Api::Admin::ApplicationController
     else
       render json: {msg: @field_group.errors, success: false}, status: 500
     end
-
-    # respond_with(@field_group)
   end
 
   # POST /admin/field_groups/sort
@@ -82,11 +61,9 @@ class Api::Admin::FieldGroupsController < Api::Admin::ApplicationController
   def sort
     asset = params[:asset]
     field_group_ids = params["#{asset}_field_groups"]
-
     field_group_ids.each_with_index do |id, index|
       FieldGroup.where(id: id).update_all(position: index + 1)
     end
-
     render nothing: true
   end
 

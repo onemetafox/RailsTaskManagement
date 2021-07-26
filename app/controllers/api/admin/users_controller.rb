@@ -6,9 +6,6 @@
 # See MIT-LICENSE file or http://www.opensource.org/licenses/mit-license.php
 #------------------------------------------------------------------------------
 class Api::Admin::UsersController < Api::Admin::ApplicationController
-  # before_action :setup_current_tab, only: %i[index show]
-
-  # load_resource except: [:create]
 
   # GET /admin/users
   # GET /admin/users.xml                                                   HTML
@@ -16,36 +13,16 @@ class Api::Admin::UsersController < Api::Admin::ApplicationController
   def index
     @users = get_users(page: params[:page])
     render json: @users.to_json(include: [:groups]), status: 200
-    # respond_with(@users)
   end
 
   # GET /admin/users/1
-  # GET /admin/users/1.xml
-  #----------------------------------------------------------------------------
   def show
     # respond_with(@user)
     @user = User.find_by_id(params[:id])
     render json: @user.to_json(include: [:groups]), status: 200
   end
 
-  # GET /admin/users/new
-  # GET /admin/users/new.xml                                               AJAX
-  #----------------------------------------------------------------------------
-  # def new
-  #   respond_with(@user)
-  # end
-
-  # GET /admin/users/1/edit                                                AJAX
-  #----------------------------------------------------------------------------
-  # def edit
-  #   @previous = User.find_by_id(Regexp.last_match[1]) || Regexp.last_match[1].to_i if params[:previous].to_s =~ /(\d+)\z/
-
-  #   render json: @previous
-  # end
-
   # POST /admin/users
-  # POST /admin/users.xml                                                  AJAX
-  #----------------------------------------------------------------------------
   def create
     @user = User.new(user_params)
 
@@ -57,9 +34,7 @@ class Api::Admin::UsersController < Api::Admin::ApplicationController
     end
   end
 
-  # PUT /admin/users/1
-  # PUT /admin/users/1.xml                                                 AJAX
-  #----------------------------------------------------------------------------
+  # POST /admin/users/1
   def update
     @user = User.find(params[:id])
     @user.attributes = user_params
@@ -71,15 +46,12 @@ class Api::Admin::UsersController < Api::Admin::ApplicationController
   end
 
   # GET /admin/users/1/confirm                                             AJAX
-  #----------------------------------------------------------------------------
   def confirm
     @user = User.find_by_id(params[:id])
     render json: @user, status: 200
   end
 
   # DELETE /admin/users/1
-  # DELETE /admin/users/1.xml                                              AJAX
-  #----------------------------------------------------------------------------
   def delete
     @user = User.find_by_id(params[:id])
     if @user.destroy
@@ -89,13 +61,7 @@ class Api::Admin::UsersController < Api::Admin::ApplicationController
     end
   end
 
-  # POST /users/auto_complete/query                                        AJAX
-  #----------------------------------------------------------------------------
-  # Handled by Admin::ApplicationController :auto_complete
-
   # PUT /admin/users/1/suspend
-  # PUT /admin/users/1/suspend.xml                                         AJAX
-  #----------------------------------------------------------------------------
   def suspend
     @user = User.find_by_id(params[:id])
     @user.update_attribute(:suspended_at, Time.now) 
@@ -103,8 +69,6 @@ class Api::Admin::UsersController < Api::Admin::ApplicationController
   end
 
   # PUT /admin/users/1/reactivate
-  # PUT /admin/users/1/reactivate.xml                                      AJAX
-  #----------------------------------------------------------------------------
   def reactivate
     @user = User.find_by_id(params[:id])
     @user.update_attribute(:suspended_at, nil)
@@ -114,7 +78,6 @@ class Api::Admin::UsersController < Api::Admin::ApplicationController
   protected
 
   def user_params
-    # return {} unless params[:user]
     return {} unless params
 
     params[:password_confirmation] = nil if params[:password_confirmation].blank?
@@ -144,7 +107,6 @@ class Api::Admin::UsersController < Api::Admin::ApplicationController
 
   private
 
-  #----------------------------------------------------------------------------
   def get_users(options = {})
     self.current_page  = options[:page] if options[:page]
     self.current_query = params[:query] if params[:query]

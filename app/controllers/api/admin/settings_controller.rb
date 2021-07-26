@@ -14,7 +14,4 @@ class Api::Admin::SettingsController < Api::Admin::ApplicationController
   def index
   end
 
-  # def setup_current_tab
-  #   set_current_tab('admin/settings')
-  # end
 end

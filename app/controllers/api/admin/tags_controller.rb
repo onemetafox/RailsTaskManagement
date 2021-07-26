@@ -6,10 +6,7 @@
 # See MIT-LICENSE file or http://www.opensource.org/licenses/mit-license.php
 #------------------------------------------------------------------------------
 class Api::Admin::TagsController < Api::Admin::ApplicationController
-  # before_action :setup_current_tab, only: %i[index show]
-
-  # load_resource
-
+ 
   # GET /admin/tags
   # GET /admin/tags.xml                                                   HTML
   #----------------------------------------------------------------------------
@@ -17,19 +14,6 @@ class Api::Admin::TagsController < Api::Admin::ApplicationController
     @tag = Tag.all.inspect
     render json: {data: @tag, success: true}, status: 200
   end
-
-  # GET /admin/tags/new
-  # GET /admin/tags/new.xml                                               AJAX
-  #----------------------------------------------------------------------------
-  # def new
-  #   respond_with(@tag)
-  # end
-
-  # GET /admin/tags/1/edit                                                AJAX
-  #----------------------------------------------------------------------------
-  # def edit
-  #   @previous = Tag.find_by_id(Regexp.last_match[1]) || Regexp.last_match[1].to_i if params[:previous].to_s =~ /(\d+)\z/
-  # end
 
   # POST /admin/tags
   # POST /admin/tags.xml                                                  AJAX
@@ -41,10 +25,6 @@ class Api::Admin::TagsController < Api::Admin::ApplicationController
     else
       render json: {msg: @tag.errors, success: false}, status: 500
     end
-
-    # @tag.update(tag_params)
-
-    # respond_with(@tag)
   end
 
   # PUT /admin/tags/1
@@ -58,8 +38,6 @@ class Api::Admin::TagsController < Api::Admin::ApplicationController
     else
       render json: {msg: @tag.errors, success: false}, status: 500
     end
-
-    # respond_with(@tag)
   end
   
   def delete
@@ -69,8 +47,6 @@ class Api::Admin::TagsController < Api::Admin::ApplicationController
     else
       render json: {msg: @tag.errors, success: false}, status: 500
     end
-
-    # respond_with(@tag)
   end
 
   # GET /admin/tags/1/confirm                                             AJAX
