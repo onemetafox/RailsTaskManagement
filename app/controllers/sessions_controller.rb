@@ -5,24 +5,25 @@
 # Fat Free CRM is freely distributable under the terms of MIT license.
 # See MIT-LICENSE file or http://www.opensource.org/licenses/mit-license.php
 #------------------------------------------------------------------------------
+# require 'jwt'
 class SessionsController < Devise::SessionsController
+
+
 
   skip_before_action :verify_authenticity_token
 
   before_action :configure_sign_in_params, only: [:create]
-
-  # respond_to :html
-  # append_view_path 'app/views/devise'
-  
-  # def after_sign_out_path_for(*)
-  #   new_user_session_path
-  # end
   
   def create
     user = User.find_by_email(params[:email])
     if user && user.valid_password?(params[:password])
       @current_user = user
-      session[:current_user] = @current_user
+      session[user.email] = @current_user
+      
+    #   # puts JWT.encode({ id: user.id,
+    #   #           exp: 1.hours.from_now.to_i },
+    #   #          Rails.application.secrets.secret_key_base)
+
       render json: { success: true , data: user.to_json}, status: 200
     else
       render json: { errors: { 'email or password' => ['is invalid'] } }, status: :unprocessable_entity

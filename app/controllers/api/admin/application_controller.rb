@@ -12,8 +12,9 @@ class Api::Admin::ApplicationController < Api::ApiController
   private
 
   def require_admin_user
-    authenticate_user!
-    unless current_user&.admin?
+    authenticate_user
+    # unless current_user& current_user.admin?
+    unless current_user
       render json: {success: false, msg: "You don't have admin role"}, status: 200
     end
   end

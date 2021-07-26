@@ -5,21 +5,21 @@
 # Fat Free CRM is freely distributable under the terms of MIT license.
 # See MIT-LICENSE file or http://www.opensource.org/licenses/mit-license.php
 #------------------------------------------------------------------------------
-class TasksController < ApplicationController
-  before_action :set_current_tab, only: %i[index show]
-  before_action :update_sidebar, only: :index
+class Api::TasksController < Api::ApiController
+
+  # before_action :update_sidebar, only: :index
 
   # GET /tasks
   #----------------------------------------------------------------------------
   def index
     @view = view
-    @tasks = Task.find_all_grouped(current_user, @view)
+    @tasks = Task.find_all_grouped(self.current_user, @view)
 
-    respond_with @tasks do |format|
-      format.xls { render layout: 'header' }
-      format.csv { render csv: @tasks.map(&:second).flatten }
-      format.xml { render xml: @tasks, except: [:subscribed_users] }
-    end
+    # respond_with @tasks do |format|
+    #   format.xls { render layout: 'header' }
+    #   format.csv { render csv: @tasks.map(&:second).flatten }
+    #   format.xml { render xml: @tasks, except: [:subscribed_users] }
+    # end
   end
 
   # GET /tasks/1
@@ -194,28 +194,28 @@ class TasksController < ApplicationController
 
   # Collect data necessary to render filters sidebar.
   #----------------------------------------------------------------------------
-  def update_sidebar
-    @view = view
-    @task_total = Task.totals(current_user, @view)
+  # def update_sidebar
+  #   @view = view
+  #   @task_total = Task.totals(current_user, @view)
 
-    # Update filters session if we added, deleted, or completed a task.
-    if @task
-      update_session do |filters|
-        if @empty_bucket # deleted, completed, rescheduled, or reassigned and need to hide a bucket
-          filters.delete(@empty_bucket)
-        elsif !@task.deleted_at && !@task.completed_at # created new task
-          filters << @task.computed_bucket
-        end
-      end
-    end
+  #   # Update filters session if we added, deleted, or completed a task.
+  #   if @task
+  #     update_session do |filters|
+  #       if @empty_bucket # deleted, completed, rescheduled, or reassigned and need to hide a bucket
+  #         filters.delete(@empty_bucket)
+  #       elsif !@task.deleted_at && !@task.completed_at # created new task
+  #         filters << @task.computed_bucket
+  #       end
+  #     end
+  #   end
 
-    # Create default filters if filters session is empty.
-    name = "filter_by_task_#{@view}"
-    unless session[name]
-      filters = @task_total.keys.select { |key| key != :all && @task_total[key] != 0 }.join(",")
-      session[name] = filters unless filters.blank?
-    end
-  end
+  #   # Create default filters if filters session is empty.
+  #   name = "filter_by_task_#{@view}"
+  #   unless session[name]
+  #     filters = @task_total.keys.select { |key| key != :all && @task_total[key] != 0 }.join(",")
+  #     session[name] = filters unless filters.blank?
+  #   end
+  # end
 
   # Ensure view is allowed
   #----------------------------------------------------------------------------

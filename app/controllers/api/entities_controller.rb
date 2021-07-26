@@ -5,12 +5,11 @@
 # Fat Free CRM is freely distributable under the terms of MIT license.
 # See MIT-LICENSE file or http://www.opensource.org/licenses/mit-license.php
 #------------------------------------------------------------------------------
-class EntitiesController < ApplicationController
-  before_action :set_current_tab, only: %i[index show]
-  before_action :set_view, only: %i[index show redraw]
+class Api::EntitiesController < Api::ApiController
+  # before_action :set_view, only: %i[index show redraw]
 
-  before_action :set_options, only: :index
-  before_action :load_ransack_search, only: :index
+  # before_action :set_options, only: :index
+  # before_action :load_ransack_search, only: :index
 
   load_and_authorize_resource
 
@@ -212,37 +211,37 @@ class EntitiesController < ApplicationController
   end
 
   #----------------------------------------------------------------------------
-  def timeline(asset)
-    (asset.comments + asset.emails).sort { |x, y| y.created_at <=> x.created_at }
-  end
+  # def timeline(asset)
+  #   (asset.comments + asset.emails).sort { |x, y| y.created_at <=> x.created_at }
+  # end
 
   # Sets the current template view for entities in this context
   #----------------------------------------------------------------------------
-  def set_view
-    if params['view']
-      controller = params['controller']
-      action = params['action'] == 'show' ? 'show' : 'index' # create update redraw filter index actions all use index view
-      current_user.pref[:"#{controller}_#{action}_view"] = params['view']
-    end
-  end
+  # def set_view
+  #   if params['view']
+  #     controller = params['controller']
+  #     action = params['action'] == 'show' ? 'show' : 'index' # create update redraw filter index actions all use index view
+  #     current_user.pref[:"#{controller}_#{action}_view"] = params['view']
+  #   end
+  # end
 
-  def per_page_param
-    per_page = params[:per_page]&.to_i
-    [1, [per_page, 200].min].max if per_page
-  end
+  # def per_page_param
+  #   per_page = params[:per_page]&.to_i
+  #   [1, [per_page, 200].min].max if per_page
+  # end
 
-  def page_param
-    page = params[:page]&.to_i
-    [0, page].max if page
-  end
+  # def page_param
+  #   page = params[:page]&.to_i
+  #   [0, page].max if page
+  # end
 
-  def guess_related_account(id, url, user)
-    return Account.find(id) unless id.blank?
+  # def guess_related_account(id, url, user)
+  #   return Account.find(id) unless id.blank?
 
-    if url =~ %r{/accounts/(\d+)\z}
-      Account.find(Regexp.last_match[1]) # related account
-    else
-      Account.new(user: user)
-    end
-  end
+  #   if url =~ %r{/accounts/(\d+)\z}
+  #     Account.find(Regexp.last_match[1]) # related account
+  #   else
+  #     Account.new(user: user)
+  #   end
+  # end
 end

@@ -17,7 +17,6 @@ class Api::Admin::UsersController < Api::Admin::ApplicationController
 
   # GET /admin/users/1
   def show
-    # respond_with(@user)
     @user = User.find_by_id(params[:id])
     render json: @user.to_json(include: [:groups]), status: 200
   end

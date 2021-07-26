@@ -280,7 +280,42 @@ Rails.application.routes.draw do
           post :update
         end
       end
+    end
 
+    resources :tasks, id: /\d+/ do
+      collection do
+        post :filter
+        match :auto_complete, via: %i[get post]
+      end
+      member do
+        post :complete
+        post :uncomplete
+        post :update
+        post :delete
+      end
+    end
+
+
+    namespace :entities do
+      resources :accounts, id: /\d+/ do
+        collection do
+          get :advanced_search
+          post :filter
+          get :options
+          get :field_group
+          match :auto_complete, via: %i[get post]
+          get :redraw
+          get :versions
+        end
+        member do
+          put :attach
+          post :discard
+          post :subscribe
+          post :unsubscribe
+          get :contacts
+          get :opportunities
+        end
+      end
     end
   end
 end

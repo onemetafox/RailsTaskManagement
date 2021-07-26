@@ -253,25 +253,25 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  def configure_devise_parameters
-    devise_parameter_sanitizer.permit(:sign_up) do |user_params|
-      user_params.permit(:username, :email, :password, :password_confirmation)
-    end
-  end
+  # def configure_devise_parameters
+  #   devise_parameter_sanitizer.permit(:sign_up) do |user_params|
+  #     user_params.permit(:username, :email, :password, :password_confirmation)
+  #   end
+  # end
 
-  def authenticate_user
-    if request.headers['Authorization'].present?
-      authenticate_or_request_with_http_token do |token|
-        begin
-          jwt_payload = JWT.decode(token, Rails.application.secrets.secret_key_base).first
+  # def authenticate_user
+  #   if request.headers['Authorization'].present?
+  #     authenticate_or_request_with_http_token do |token|
+  #       begin
+  #         jwt_payload = JWT.decode(token, Rails.application.secrets.secret_key_base).first
 
-          @current_user_id = jwt_payload['id']
-        rescue JWT::ExpiredSignature, JWT::VerificationError, JWT::DecodeError
-          head :unauthorized
-        end
-      end
-    end
-  end
+  #         @current_user_id = jwt_payload['id']
+  #       rescue JWT::ExpiredSignature, JWT::VerificationError, JWT::DecodeError
+  #         head :unauthorized
+  #       end
+  #     end
+  #   end
+  # end
 
   def find_class(asset)
     Rails.application.eager_load! unless Rails.application.config.cache_classes
