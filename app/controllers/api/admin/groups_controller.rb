@@ -52,7 +52,7 @@ class Api::Admin::GroupsController < Api::Admin::ApplicationController
 
   # DELETE /groups/1
   #----------------------------------------------------------------------------
-  def destroy
+  def delete
     @group = Group.find(params[:id])
     render json: @group.destroy
     # @group.destroy

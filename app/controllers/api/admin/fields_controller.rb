@@ -80,7 +80,7 @@ class Api::Admin::FieldsController < Api::Admin::ApplicationController
   # DELETE /fields/1
   # DELETE /fields/1.xml                                        HTML and AJAX
   #----------------------------------------------------------------------------
-  def destroy
+  def delete
     @field = Field.find(params[:id])
     if @field.destroy
       render json: {data: @field, success: true}, status: 200

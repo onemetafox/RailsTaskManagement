@@ -236,9 +236,19 @@ Rails.application.routes.draw do
 
     namespace :admin do
 
-      resources :groups
+      resources :groups do
+        member do
+          post :delete
+          post :update
+        end
+      end
 
-      resources :tags
+      resources :tags do
+        member do
+          post :delete
+          post :update
+        end
+      end
 
       resources :field_groups do
         collection do
@@ -246,10 +256,17 @@ Rails.application.routes.draw do
         end
         member do
           get :confirm
+          post :delete
+          post :update
         end
       end
 
-      resources :fields 
+      resources :fields do
+        member do
+          post :delete
+          post :update
+        end
+      end
 
       resources :users do
         # collection do

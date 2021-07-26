@@ -66,7 +66,7 @@ class Api::Admin::FieldGroupsController < Api::Admin::ApplicationController
   # DELETE /admin/field_groups/1
   # DELETE /admin/field_groups/1.xml                                       AJAX
   #----------------------------------------------------------------------------
-  def destroy
+  def delete
     @field_group = FieldGroup.find(params[:id])
     if @field_group.destroy
       render json: {data: @field_group, success: true}, status: 200

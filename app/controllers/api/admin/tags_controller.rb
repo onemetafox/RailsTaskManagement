@@ -61,11 +61,8 @@ class Api::Admin::TagsController < Api::Admin::ApplicationController
 
     # respond_with(@tag)
   end
-
-  # DELETE /admin/tags/1
-  # DELETE /admin/tags/1.xml                                              AJAX
-  #----------------------------------------------------------------------------
-  def destroy
+  
+  def delete
     @tag = Tag.find_by_id(params[:id])
     if @tag.destroy
      render json: {data: @tag, success: true}, status: 200

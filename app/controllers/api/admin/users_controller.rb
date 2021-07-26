@@ -80,18 +80,6 @@ class Api::Admin::UsersController < Api::Admin::ApplicationController
   # DELETE /admin/users/1
   # DELETE /admin/users/1.xml                                              AJAX
   #----------------------------------------------------------------------------
-  def destroy
-    @user = User.find_by_id(params[:id])
-    if @user.destroy
-      render json: @user.destroy, status: 200
-    else
-      render json: @user.errors, status: 500
-    end
-    # flash[:warning] = t(:msg_cant_delete_user, @user.full_name) unless @user.destroyable?(current_user) && @user.destroy
-
-    # respond_with(@user)
-  end
-
   def delete
     @user = User.find_by_id(params[:id])
     if @user.destroy
