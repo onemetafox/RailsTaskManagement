@@ -302,6 +302,12 @@ Rails.application.routes.draw do
           post :update
         end
       end
+      resources :contacts, id: /\d+/ do
+        member do
+          post :delete
+          post :update
+        end
+      end
       resources :opportunities, id: /\d+/ do
         member do
           post :delete

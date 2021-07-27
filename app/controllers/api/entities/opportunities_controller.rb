@@ -60,53 +60,51 @@ class Api::Entities::OpportunitiesController < Api::EntitiesController
 
     @previous = Opportunity.my(current_user).find_by_id(Regexp.last_match[1]) || Regexp.last_match[1].to_i if params[:previous].to_s =~ /(\d+)\z/
 
-    respond_with(@opportunity)
+    render json: {data: @opportunity.to_json(incldue: [:tags]), success: true}, status: 200
   end
 
   # POST /opportunities
   #----------------------------------------------------------------------------
   def create
     @comment_body = params[:comment_body]
-    respond_with(@opportunity) do |_format|
-      if @opportunity.save_with_account_and_permissions(params.permit!)
-        @opportunity.add_comment_by_user(@comment_body, current_user)
-        if called_from_index_page?
-          @opportunities = get_opportunities
-          get_data_for_sidebar
-        elsif called_from_landing_page?(:accounts)
-          get_data_for_sidebar(:account)
-        elsif called_from_landing_page?(:campaigns)
-          get_data_for_sidebar(:campaign)
-        end
-      else
-        @accounts = Account.my(current_user).order('name')
-        @account = guess_related_account(params[:account][:id], request.referer, current_user)
-        @contact = Contact.find(params[:contact]) unless params[:contact].blank?
-        @campaign = Campaign.find(params[:campaign]) unless params[:campaign].blank?
-      end
+    if @opportunity.save_with_account_and_permissions(params.permit!)
+      @opportunity.add_comment_by_user(@comment_body, current_user)
+      # if called_from_index_page?
+      #   @opportunities = get_opportunities
+      #   get_data_for_sidebar
+      # elsif called_from_landing_page?(:accounts)
+      #   get_data_for_sidebar(:account)
+      # elsif called_from_landing_page?(:campaigns)
+      #   get_data_for_sidebar(:campaign)
+      # end
+      render json: {data: @opportunity.to_json(include: [:account]), success: true}, status: 200
+    else
+      @accounts = Account.my(current_user).order('name')
+      @account = guess_related_account(params[:account][:id], request.referer, current_user)
+      @contact = Contact.find(params[:contact]) unless params[:contact].blank?
+      @campaign = Campaign.find(params[:campaign]) unless params[:campaign].blank?
     end
   end
 
   # PUT /opportunities/1
   #----------------------------------------------------------------------------
   def update
-    respond_with(@opportunity) do |_format|
-      if @opportunity.update_with_account_and_permissions(params.permit!)
-        if called_from_index_page?
-          get_data_for_sidebar
-        elsif called_from_landing_page?(:accounts)
-          get_data_for_sidebar(:account)
-        elsif called_from_landing_page?(:campaigns)
-          get_data_for_sidebar(:campaign)
-        end
-      else
-        @accounts = Account.my(current_user).order('name')
-        @account = if @opportunity.account
-                     Account.find(@opportunity.account.id)
-                   else
-                     Account.new(user: current_user)
-                   end
-      end
+    if @opportunity.update_with_account_and_permissions(params.permit!)
+      # if called_from_index_page?
+      #   get_data_for_sidebar
+      # elsif called_from_landing_page?(:accounts)
+      #   get_data_for_sidebar(:account)
+      # elsif called_from_landing_page?(:campaigns)
+      #   get_data_for_sidebar(:campaign)
+      # end
+      render json: {data: @opportunity.to_json(include: [:account]), success: true}, status:200
+    else
+      @accounts = Account.my(current_user).order('name')
+      @account = if @opportunity.account
+                   Account.find(@opportunity.account.id)
+                 else
+                   Account.new(user: current_user)
+                 end
     end
   end
 

@@ -6,7 +6,7 @@
 # See MIT-LICENSE file or http://www.opensource.org/licenses/mit-license.php
 #------------------------------------------------------------------------------
 class Api::Entities::AccountsController < Api::EntitiesController
-  before_action :get_data_for_sidebar, only: :index
+  # before_action :get_data_for_sidebar, only: :index
 
   # GET /accounts
   #----------------------------------------------------------------------------
@@ -25,7 +25,7 @@ class Api::Entities::AccountsController < Api::EntitiesController
     # @stage = Setting.unroll(:opportunity_stage)
     # @comment = Comment.new
     # @timeline = timeline(@account)
-    render json: { data: @account.to_json, success: true }, status: 200
+    render json: { data: @account.to_json(include: [:tasks, :contacts, :opportunities]), success: true }, status: 200
   end
 
 
@@ -61,11 +61,16 @@ class Api::Entities::AccountsController < Api::EntitiesController
   # DELETE /accounts/1
   #----------------------------------------------------------------------------
   def delete
-    @account.destroy
-    respond_with(@account) do |format|
-      format.html { respond_to_destroy(:html) }
-      format.js   { respond_to_destroy(:ajax) }
+    if @account.destroy
+      render json: {data: @account.to_json, success: true}, status: 200
+    else
+      render json: {msg: @account.errors.to_json, success: false}, status: 500
     end
+
+    # respond_with(@account) do |format|
+    #   format.html { respond_to_destroy(:html) }
+    #   format.js   { respond_to_destroy(:ajax) }
+    # end
   end
 
   # PUT /accounts/1/attach
@@ -107,7 +112,7 @@ class Api::Entities::AccountsController < Api::EntitiesController
   # GET /accounts/1/edit   
   def edit
     @account = Account.find(params[:id])
-    render json: {data: @account.to_json(include: [:tasks, :contacts, :opportunities]), success: true}, status: 200
+    render json: {data: @account.to_json(include: [:tags]), success: true}, status: 200
   end
 
   private

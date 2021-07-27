@@ -209,39 +209,37 @@ class Api::EntitiesController < Api::ApiController
     end
     [query.join(" "), tags.join(", ")]
   end
+  def guess_related_account(id, url, user)
+    return Account.find(id) unless id.blank?
 
-  #----------------------------------------------------------------------------
-  # def timeline(asset)
-  #   (asset.comments + asset.emails).sort { |x, y| y.created_at <=> x.created_at }
-  # end
+    if url =~ %r{/accounts/(\d+)\z}
+      Account.find(Regexp.last_match[1]) # related account
+    else
+      Account.new(user: user)
+    end
+  end
+  # ----------------------------------------------------------------------------
+  def timeline(asset)
+    (asset.comments + asset.emails).sort { |x, y| y.created_at <=> x.created_at }
+  end
 
   # Sets the current template view for entities in this context
-  #----------------------------------------------------------------------------
-  # def set_view
-  #   if params['view']
-  #     controller = params['controller']
-  #     action = params['action'] == 'show' ? 'show' : 'index' # create update redraw filter index actions all use index view
-  #     current_user.pref[:"#{controller}_#{action}_view"] = params['view']
-  #   end
-  # end
+  # ----------------------------------------------------------------------------
+  def set_view
+    if params['view']
+      controller = params['controller']
+      action = params['action'] == 'show' ? 'show' : 'index' # create update redraw filter index actions all use index view
+      current_user.pref[:"#{controller}_#{action}_view"] = params['view']
+    end
+  end
 
-  # def per_page_param
-  #   per_page = params[:per_page]&.to_i
-  #   [1, [per_page, 200].min].max if per_page
-  # end
+  def per_page_param
+    per_page = params[:per_page]&.to_i
+    [1, [per_page, 200].min].max if per_page
+  end
 
-  # def page_param
-  #   page = params[:page]&.to_i
-  #   [0, page].max if page
-  # end
-
-  # def guess_related_account(id, url, user)
-  #   return Account.find(id) unless id.blank?
-
-  #   if url =~ %r{/accounts/(\d+)\z}
-  #     Account.find(Regexp.last_match[1]) # related account
-  #   else
-  #     Account.new(user: user)
-  #   end
-  # end
+  def page_param
+    page = params[:page]&.to_i
+    [0, page].max if page
+  end
 end

@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "eee6367e-ef32-41a6-8e43-c066cb69a7ce",
+		"_postman_id": "4de2b686-ab03-438f-afc3-bac476855006",
 		"name": "Rails Api",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -1115,8 +1115,766 @@
 			]
 		},
 		{
-			"name": "Home",
-			"item": []
+			"name": "Entities",
+			"item": [
+				{
+					"name": "accounts",
+					"item": [
+						{
+							"name": "all",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "query",
+											"value": "h",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "localhost:3000/api/entities/accounts",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"entities",
+										"accounts"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "show",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": []
+								},
+								"url": {
+									"raw": "localhost:3000/api/entities/accounts/1",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"entities",
+										"accounts",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "edit",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": []
+								},
+								"url": {
+									"raw": "localhost:3000/api/entities/accounts/1/edit",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"entities",
+										"accounts",
+										"1",
+										"edit"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": []
+								},
+								"url": {
+									"raw": "localhost:3000/api/entities/accounts/1/delete",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"entities",
+										"accounts",
+										"1",
+										"delete"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "account[name]",
+											"value": "10",
+											"type": "text"
+										},
+										{
+											"key": "account[assigned_to]",
+											"value": "2",
+											"type": "text"
+										},
+										{
+											"key": "account[billing[address]]",
+											"value": "sdcsec",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "account[shipping[address]]",
+											"value": "fdger",
+											"type": "text",
+											"disabled": true
+										}
+									]
+								},
+								"url": {
+									"raw": "localhost:3000/api/entities/accounts/4",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"entities",
+										"accounts",
+										"4"
+									],
+									"query": [
+										{
+											"key": "opportunity[user_id]",
+											"value": "2",
+											"disabled": true
+										},
+										{
+											"key": "opportunity[name]",
+											"value": "estesdf",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "create",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "account[name]",
+											"value": "asdcae",
+											"type": "text"
+										},
+										{
+											"key": "account[assigned_to]",
+											"value": "2",
+											"type": "text"
+										},
+										{
+											"key": "account[billing[address]]",
+											"value": "sdcsec",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "account[shipping[address]]",
+											"value": "fdger",
+											"type": "text",
+											"disabled": true
+										}
+									]
+								},
+								"url": {
+									"raw": "localhost:3000/api/entities/accounts/",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"entities",
+										"accounts",
+										""
+									],
+									"query": [
+										{
+											"key": "opportunity[user_id]",
+											"value": "2",
+											"disabled": true
+										},
+										{
+											"key": "opportunity[name]",
+											"value": "estesdf",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "leads",
+					"item": []
+				},
+				{
+					"name": "contacts",
+					"item": [
+						{
+							"name": "all",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "query",
+											"value": "q",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "localhost:3000/api/entities/contacts",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"entities",
+										"contacts"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "show",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": []
+								},
+								"url": {
+									"raw": "localhost:3000/api/entities/contacts/1",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"entities",
+										"contacts",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "edit",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": []
+								},
+								"url": {
+									"raw": "localhost:3000/api/entities/contacts/1",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"entities",
+										"contacts",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "create",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "contact[user_id]",
+											"value": "3"
+										},
+										{
+											"key": "contact[first_name]",
+											"value": "blajnjnef"
+										},
+										{
+											"key": "account[user_id]",
+											"value": "2"
+										},
+										{
+											"key": "account[access]",
+											"value": "Public"
+										},
+										{
+											"key": "contact[tag_list][]",
+											"value": "0"
+										},
+										{
+											"key": "contact[business_address_attributes][country]",
+											"value": "us"
+										},
+										{
+											"key": "contact[group_ids][]",
+											"value": "1"
+										},
+										{
+											"key": "",
+											"value": "",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "localhost:3000/api/entities/contacts",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"entities",
+										"contacts"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "contact[user_id]",
+											"value": "3"
+										},
+										{
+											"key": "contact[first_name]",
+											"value": "blajnjnef"
+										},
+										{
+											"key": "account[user_id]",
+											"value": "2"
+										},
+										{
+											"key": "account[access]",
+											"value": "Public"
+										},
+										{
+											"key": "contact[tag_list][]",
+											"value": "0"
+										},
+										{
+											"key": "contact[business_address_attributes][country]",
+											"value": "us"
+										},
+										{
+											"key": "contact[group_ids][]",
+											"value": "1"
+										},
+										{
+											"key": "",
+											"value": "",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "localhost:3000/api/entities/contacts/1/delete",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"entities",
+										"contacts",
+										"1",
+										"delete"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "contact[user_id]",
+											"value": "3"
+										},
+										{
+											"key": "contact[first_name]",
+											"value": "blajnjnef"
+										},
+										{
+											"key": "account[user_id]",
+											"value": "2"
+										},
+										{
+											"key": "account[access]",
+											"value": "Public"
+										},
+										{
+											"key": "contact[tag_list][]",
+											"value": "0"
+										},
+										{
+											"key": "contact[business_address_attributes][country]",
+											"value": "us"
+										},
+										{
+											"key": "contact[group_ids][]",
+											"value": "1"
+										},
+										{
+											"key": "",
+											"value": "",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "localhost:3000/api/entities/contacts/5",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"entities",
+										"contacts",
+										"5"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "opportunitis",
+					"item": [
+						{
+							"name": "all",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "query",
+											"value": "h",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "localhost:3000/api/entities/opportunities",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"entities",
+										"opportunities"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "show",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "query",
+											"value": "",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "localhost:3000/api/entities/opportunities/3",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"entities",
+										"opportunities",
+										"3"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "query",
+											"value": "",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "localhost:3000/api/entities/accounts/3/delete",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"entities",
+										"accounts",
+										"3",
+										"delete"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "opportunity[user_id]",
+											"value": "2",
+											"type": "text"
+										},
+										{
+											"key": "opportunity[name]",
+											"value": "dfvdfvdfvdfv",
+											"type": "text"
+										},
+										{
+											"key": "account[user_id]",
+											"value": "2",
+											"type": "text"
+										},
+										{
+											"key": "account[access]",
+											"value": "Public",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "localhost:3000/api/entities/opportunities/4",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"entities",
+										"opportunities",
+										"4"
+									],
+									"query": [
+										{
+											"key": "opportunity[user_id]",
+											"value": "2",
+											"disabled": true
+										},
+										{
+											"key": "opportunity[name]",
+											"value": "estesdf",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "create",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "opportunity[user_id]",
+											"value": "2",
+											"type": "text"
+										},
+										{
+											"key": "opportunity[name]",
+											"value": "dfvdfvdfvdfv",
+											"type": "text"
+										},
+										{
+											"key": "account[user_id]",
+											"value": "2",
+											"type": "text"
+										},
+										{
+											"key": "account[access]",
+											"value": "Public",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "localhost:3000/api/entities/opportunities",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"entities",
+										"opportunities"
+									],
+									"query": [
+										{
+											"key": "opportunity[user_id]",
+											"value": "2",
+											"disabled": true
+										},
+										{
+											"key": "opportunity[name]",
+											"value": "estesdf",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "edit",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:3000/api/entities/opportunities/3/edit",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"entities",
+										"opportunities",
+										"3",
+										"edit"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
 		},
 		{
 			"name": "API TEST ",
