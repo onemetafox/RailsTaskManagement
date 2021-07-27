@@ -163,14 +163,14 @@ class EntitiesController < ApplicationController
     @search_results_count = scope.size
 
     # Pagination is disabled for xls and csv requests
-    unless wants.xls? || wants.csv?
-      per_page = if options[:per_page]
-                   options[:per_page] == 'all' ? @search_results_count : options[:per_page]
-                 else
-                   current_user.pref[:"#{controller_name}_per_page"]
-      end
-      scope = scope.paginate(page: current_page, per_page: per_page)
-    end
+    # unless wants.xls? || wants.csv?
+    #   per_page = if options[:per_page]
+    #                options[:per_page] == 'all' ? @search_results_count : options[:per_page]
+    #              else
+    #                current_user.pref[:"#{controller_name}_per_page"]
+    #   end
+    #   scope = scope.paginate(page: current_page, per_page: per_page)
+    # end
 
     scope = scope.includes(*list_includes) if respond_to?(:list_includes, true)
 

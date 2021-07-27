@@ -6,81 +6,62 @@
 # See MIT-LICENSE file or http://www.opensource.org/licenses/mit-license.php
 #------------------------------------------------------------------------------
 class Api::Entities::AccountsController < Api::EntitiesController
-  # before_action :get_data_for_sidebar, only: :index
+  before_action :get_data_for_sidebar, only: :index
 
   # GET /accounts
   #----------------------------------------------------------------------------
   def index
-    @accounts = get_accounts(page: page_param, per_page: per_page_param)
-
-    respond_with @accounts do |format|
-      format.xls { render layout: 'header' }
-      format.csv { render csv: @accounts }
-    end
+    # @accounts = get_accounts(page: page_param, per_page: per_page_param)
+    @accounts = get_accouts
+    render json: {data: @accounts.to_json(include: [:assignee, :tags]), success: true }, status: 200
+    # respond_with @accounts do |format|
+    #   format.xls { render layout: 'header' }
+    #   format.csv { render csv: @accounts }
+    # end
   end
 
   # GET /accounts/1
-  # AJAX /accounts/1
-  #----------------------------------------------------------------------------
   def show
-    @stage = Setting.unroll(:opportunity_stage)
-    @comment = Comment.new
-    @timeline = timeline(@account)
-    respond_with(@account)
+    # @stage = Setting.unroll(:opportunity_stage)
+    # @comment = Comment.new
+    # @timeline = timeline(@account)
+    render json: { data: @account.to_json, success: true }, status: 200
   end
 
-  # GET /accounts/new
-  #----------------------------------------------------------------------------
-  def new
-    @account.attributes = { user: current_user, access: Setting.default_access, assigned_to: nil }
-
-    if params[:related]
-      model, id = params[:related].split('_')
-      instance_variable_set("@#{model}", model.classify.constantize.find(id))
-    end
-
-    respond_with(@account)
-  end
-
-  # GET /accounts/1/edit                                                   AJAX
-  #----------------------------------------------------------------------------
-  def edit
-    @previous = Account.my(current_user).find_by_id(Regexp.last_match[1]) || Regexp.last_match[1].to_i if params[:previous].to_s =~ /(\d+)\z/
-
-    respond_with(@account)
-  end
 
   # POST /accounts
-  #----------------------------------------------------------------------------
   def create
-    # @comment_body = params[:comment_body]
-    # puts params
-    # respond_with(@account) do |_format|
-    #   if @account.save
-    #     @account.add_comment_by_user(@comment_body, current_user)
-    #     # None: account can only be created from the Accounts index page, so we
-    #     # don't have to check whether we're on the index page.
-    #     @accounts = get_accounts
-    #     get_data_for_sidebar
-    #   end
-    # end
+    @comment_body = params[:comment_body]
+    if @account.save
+      @account.add_comment_by_user(@comment_body, current_user)
+      render json: { data: @account.to_json, success: true}, status: 200
+
+    else
+      render json: {msg: @account.errors.to_json, success: false}, status: 500
+    end
   end
 
   # PUT /accounts/1
   #----------------------------------------------------------------------------
   def update
-    respond_with(@account) do |_format|
-      # Must set access before user_ids, because user_ids= method depends on access value.
+    # respond_with(@account) do |_format|
+    if @account.save
+      @account.update(resource_params)
       @account.access = params[:account][:access] if params[:account][:access]
-      get_data_for_sidebar if @account.update(resource_params)
+      render json: {data: @account.to_json, success: true}, status:200
+    else
+      render json: {msg: @account.errors.to_json, success: true}, status:500
     end
+      # Must set access before user_ids, because user_ids= method depends on access value.
+      
+      # get_data_for_sidebar if @account.update(resource_params)
+    # end
   end
 
   # DELETE /accounts/1
   #----------------------------------------------------------------------------
-  def destroy
+  def delete
     @account.destroy
-
     respond_with(@account) do |format|
       format.html { respond_to_destroy(:html) }
       format.js   { respond_to_destroy(:ajax) }
@@ -123,10 +104,29 @@ class Api::Entities::AccountsController < Api::EntitiesController
     end
   end
 
+  # GET /accounts/1/edit   
+  def edit
+    @account = Account.find(params[:id])
+    render json: {data: @account.to_json(include: [:tasks, :contacts, :opportunities]), success: true}, status: 200
+  end
+
   private
 
   #----------------------------------------------------------------------------
-  alias get_accounts get_list_of_records
+  # alias get_accounts get_list_of_records
+  def get_accouts
+    # self.current_page  = options[:page] if options[:page]
+    self.current_query = params[:query] if params[:query]
+
+    @search = klass.ransack(params[:q])
+    @search.build_grouping unless @search.groupings.any?
+
+    scope = Account.text_search(params[:query])
+    scope = scope.merge(@search.result)
+    scope = scope.text_search(current_query)      if current_query.present?
+    # scope = scope.paginate(page: current_page) if wants.html? || wants.js? || wants.xml?
+    scope
+  end
 
   #----------------------------------------------------------------------------
   def list_includes
@@ -149,6 +149,7 @@ class Api::Entities::AccountsController < Api::EntitiesController
       redirect_to accounts_path
     end
   end
+
 
   #----------------------------------------------------------------------------
   def get_data_for_sidebar

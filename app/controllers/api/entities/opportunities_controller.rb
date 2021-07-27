@@ -5,51 +5,52 @@
 # Fat Free CRM is freely distributable under the terms of MIT license.
 # See MIT-LICENSE file or http://www.opensource.org/licenses/mit-license.php
 #------------------------------------------------------------------------------
-class OpportunitiesController < EntitiesController
-  before_action :load_settings
-  before_action :get_data_for_sidebar, only: :index
-  before_action :set_params, only: %i[index redraw filter]
+class Api::Entities::OpportunitiesController < Api::EntitiesController
+  # before_action :load_settings
+  # before_action :get_data_for_sidebar, only: :index
+  # before_action :set_params, only: %i[index redraw filter]
 
   # GET /opportunities
   #----------------------------------------------------------------------------
   def index
-    @opportunities = get_opportunities(page: page_param, per_page: per_page_param)
-
-    respond_with @opportunities do |format|
-      format.xls { render layout: 'header' }
-      format.csv { render csv: @opportunities }
-    end
+    # @opportunities = get_opportunities(page: page_param, per_page: per_page_param)
+    @opportunities = get_opportunities
+    render json: {data: @opportunities.to_json(include: [:account, :tags]), success: true}, status: 500
+    # respond_with @opportunities do |format|
+    #   format.xls { render layout: 'header' }
+    #   format.csv { render csv: @opportunities }
+    # end
   end
 
   # GET /opportunities/1
   # AJAX /opportunities/1
   #----------------------------------------------------------------------------
   def show
-    @comment = Comment.new
-    @timeline = timeline(@opportunity)
-    respond_with(@opportunity)
+    # @comment = Comment.new
+    # @timeline = timeline(@opportunity)
+    render json: {data: @opportunity.to_json(include: [:account, :tasks, :contacts]), success: true}, status: 200
   end
 
   # GET /opportunities/new
   #----------------------------------------------------------------------------
-  def new
-    @opportunity.attributes = { user: current_user, stage: Opportunity.default_stage, access: Setting.default_access, assigned_to: nil }
-    @account = Account.new(user: current_user, access: Setting.default_access)
-    @accounts = Account.my(current_user).order('name')
+  # def new
+  #   @opportunity.attributes = { user: current_user, stage: Opportunity.default_stage, access: Setting.default_access, assigned_to: nil }
+  #   @account = Account.new(user: current_user, access: Setting.default_access)
+  #   @accounts = Account.my(current_user).order('name')
 
-    if params[:related]
-      model, id = params[:related].split('_')
-      if related = model.classify.constantize.my(current_user).find_by_id(id)
-        instance_variable_set("@#{model}", related)
-        @account = related.account if related.respond_to?(:account) && !related.account.nil?
-        @campaign = related.campaign if related.respond_to?(:campaign)
-      else
-        respond_to_related_not_found(model) && return
-      end
-    end
+  #   if params[:related]
+  #     model, id = params[:related].split('_')
+  #     if related = model.classify.constantize.my(current_user).find_by_id(id)
+  #       instance_variable_set("@#{model}", related)
+  #       @account = related.account if related.respond_to?(:account) && !related.account.nil?
+  #       @campaign = related.campaign if related.respond_to?(:campaign)
+  #     else
+  #       respond_to_related_not_found(model) && return
+  #     end
+  #   end
 
-    respond_with(@opportunity)
-  end
+  #   respond_with(@opportunity)
+  # end
 
   # GET /opportunities/1/edit                                              AJAX
   #----------------------------------------------------------------------------
@@ -111,18 +112,22 @@ class OpportunitiesController < EntitiesController
 
   # DELETE /opportunities/1
   #----------------------------------------------------------------------------
-  def destroy
-    if called_from_landing_page?(:accounts)
-      @account = @opportunity.account   # Reload related account if any.
-    elsif called_from_landing_page?(:campaigns)
-      @campaign = @opportunity.campaign # Reload related campaign if any.
+  def delete
+    # if called_from_landing_page?(:accounts)
+    #   @account = @opportunity.account   # Reload related account if any.
+    # elsif called_from_landing_page?(:campaigns)
+    #   @campaign = @opportunity.campaign # Reload related campaign if any.
+    # end
+    if @opportunity.destroy
+      render json:{data: @opportunity.to_json, success: true}, status: 200
+    else
+      render json:{msg: @opportunity.errors.to_json, success: false}, status: 500
     end
-    @opportunity.destroy
 
-    respond_with(@opportunity) do |format|
-      format.html { respond_to_destroy(:html) }
-      format.js   { respond_to_destroy(:ajax) }
-    end
+    # respond_with(@opportunity) do |format|
+    #   format.html { respond_to_destroy(:html) }
+    #   format.js   { respond_to_destroy(:ajax) }
+    # end
   end
 
   # PUT /opportunities/1/attach
@@ -164,8 +169,19 @@ class OpportunitiesController < EntitiesController
   end
 
   #----------------------------------------------------------------------------
-  alias get_opportunities get_list_of_records
+  # alias get_opportunities get_list_of_records
+  def get_opportunities
+    self.current_query = params[:query] if params[:query]
 
+    @search = klass.ransack(params[:q])
+    @search.build_grouping unless @search.groupings.any?
+
+    scope = Opportunity.text_search(params[:query])
+    scope = scope.merge(@search.result)
+    scope = scope.text_search(current_query)      if current_query.present?
+    # scope = scope.paginate(page: current_page) if wants.html? || wants.js? || wants.xml?
+    scope
+  end
   #----------------------------------------------------------------------------
   def list_includes
     %i[account user tags].freeze

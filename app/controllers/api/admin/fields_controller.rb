@@ -28,7 +28,6 @@ class Api::Admin::FieldsController < Api::Admin::ApplicationController
       elsif as.present?
         # klass = find_class(Field.lookup_class(as))
         klass = Field.lookup_class(as).safe_constantize
-        puts params
         klass.create(field_params)
       else
         Field.new(field_params).tap(&:valid?)

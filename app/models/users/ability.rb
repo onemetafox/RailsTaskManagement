@@ -52,7 +52,6 @@ class Ability
           can :manage, p.asset_type.constantize, id: p.asset_id
         end
       end
-
     end
   end
 

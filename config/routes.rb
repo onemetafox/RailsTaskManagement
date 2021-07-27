@@ -295,25 +295,17 @@ Rails.application.routes.draw do
       end
     end
 
-
     namespace :entities do
       resources :accounts, id: /\d+/ do
-        collection do
-          get :advanced_search
-          post :filter
-          get :options
-          get :field_group
-          match :auto_complete, via: %i[get post]
-          get :redraw
-          get :versions
-        end
         member do
-          put :attach
-          post :discard
-          post :subscribe
-          post :unsubscribe
-          get :contacts
-          get :opportunities
+          post :delete
+          post :update
+        end
+      end
+      resources :opportunities, id: /\d+/ do
+        member do
+          post :delete
+          post :update
         end
       end
     end

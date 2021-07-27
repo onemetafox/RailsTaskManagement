@@ -253,11 +253,11 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  # def configure_devise_parameters
-  #   devise_parameter_sanitizer.permit(:sign_up) do |user_params|
-  #     user_params.permit(:username, :email, :password, :password_confirmation)
-  #   end
-  # end
+  def configure_devise_parameters
+    devise_parameter_sanitizer.permit(:sign_up) do |user_params|
+      user_params.permit(:username, :email, :password, :password_confirmation)
+    end
+  end
 
   # def authenticate_user
   #   if request.headers['Authorization'].present?

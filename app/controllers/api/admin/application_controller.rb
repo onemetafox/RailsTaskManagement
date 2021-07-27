@@ -7,7 +7,7 @@
 #------------------------------------------------------------------------------
 class Api::Admin::ApplicationController < Api::ApiController
   
-  # before_action :require_admin_user
+  before_action :require_admin_user
 
   private
 

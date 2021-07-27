@@ -18,7 +18,7 @@ class SessionsController < Devise::SessionsController
     user = User.find_by_email(params[:email])
     if user && user.valid_password?(params[:password])
       @current_user = user
-      session[user.email] = @current_user
+      session[user.email] = user
       
     #   # puts JWT.encode({ id: user.id,
     #   #           exp: 1.hours.from_now.to_i },

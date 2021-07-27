@@ -5,7 +5,7 @@
 # Fat Free CRM is freely distributable under the terms of MIT license.
 # See MIT-LICENSE file or http://www.opensource.org/licenses/mit-license.php
 #------------------------------------------------------------------------------
-class OpportunitiesController < EntitiesController
+class Api::OpportunitiesController < Api::EntitiesController
   before_action :load_settings
   before_action :get_data_for_sidebar, only: :index
   before_action :set_params, only: %i[index redraw filter]

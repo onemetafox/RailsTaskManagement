@@ -10,7 +10,6 @@ class Api::HomeController < Api::ApiController
 
   #----------------------------------------------------------------------------
   def index
-    puts current_user
     @activities = get_activities
     @my_tasks = Task.visible_on_dashboard(current_user).includes(:user, :asset).by_due_at
     @my_opportunities = Opportunity.visible_on_dashboard(current_user).includes(:account, :user, :tags).by_closes_on.by_amount

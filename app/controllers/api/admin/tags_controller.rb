@@ -11,8 +11,8 @@ class Api::Admin::TagsController < Api::Admin::ApplicationController
   # GET /admin/tags.xml                                                   HTML
   #----------------------------------------------------------------------------
   def index
-    @tag = Tag.all.inspect
-    render json: {data: @tag, success: true}, status: 200
+    @tag = Tag.all
+    render json: {data: @tag.to_json, success: true}, status: 200
   end
 
   # POST /admin/tags
@@ -21,7 +21,7 @@ class Api::Admin::TagsController < Api::Admin::ApplicationController
   def create
     @tag = Tag.new(tag_params)
     if @tag.save
-      render json: {data: @tag, success: true}, status: 200
+      render json: {data: @tag.to_json, success: true}, status: 200
     else
       render json: {msg: @tag.errors, success: false}, status: 500
     end

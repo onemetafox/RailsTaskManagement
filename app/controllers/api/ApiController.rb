@@ -3,7 +3,7 @@ class Api::ApiController < ActionController::API
   include ActionController::Helpers
   
   before_action :configure_devise_parameters, if: :devise_controller?
-  # before_action :authenticate_user
+  before_action :authenticate_user
   before_action :set_paper_trail_whodunnit
   before_action :cors_preflight_check
   
@@ -78,8 +78,10 @@ class Api::ApiController < ActionController::API
   # end
 
   def authenticate_user
+    
     if session['dan@example.com']
-      @current_user = session['dan@example.com']
+      user = session['dan@example.com']
+      @current_user = User.find(user["id"])
     else
       render json: {success: false, msg: "you should login"}, status: 200
     end
