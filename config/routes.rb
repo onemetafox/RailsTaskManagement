@@ -302,6 +302,14 @@ Rails.application.routes.draw do
           post :update
         end
       end
+      resources :leads, id: /\d+/ do
+        member do
+          post :delete
+          post :update
+          post :convert
+          post :reject
+        end
+      end
       resources :contacts, id: /\d+/ do
         member do
           post :delete
@@ -309,6 +317,12 @@ Rails.application.routes.draw do
         end
       end
       resources :opportunities, id: /\d+/ do
+        member do
+          post :delete
+          post :update
+        end
+      end
+      resources :campaigns, id: /\d+/ do
         member do
           post :delete
           post :update

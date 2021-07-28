@@ -5,18 +5,19 @@
 # Fat Free CRM is freely distributable under the terms of MIT license.
 # See MIT-LICENSE file or http://www.opensource.org/licenses/mit-license.php
 #------------------------------------------------------------------------------
-class CampaignsController < EntitiesController
-  before_action :get_data_for_sidebar, only: :index
+class Api::Entities::CampaignsController < Api::EntitiesController
+  # before_action :get_data_for_sidebar, only: :index
 
   # GET /campaigns
   #----------------------------------------------------------------------------
   def index
-    @campaigns = get_campaigns(page: page_param, per_page: per_page_param)
+    # @campaigns = get_campaigns(page: page_param, per_page: per_page_param)
+    render json: {data: @campaigns.to_json, success: true}, status: 200
 
-    respond_with @campaigns do |format|
-      format.xls { render layout: 'header' }
-      format.csv { render csv: @campaigns }
-    end
+    # respond_with @campaigns do |format|
+    #   format.xls { render layout: 'header' }
+    #   format.csv { render csv: @campaigns }
+    # end
   end
 
   # GET /campaigns/1
@@ -28,38 +29,39 @@ class CampaignsController < EntitiesController
   # ATOM /campaigns/1
   #----------------------------------------------------------------------------
   def show
-    respond_with(@campaign) do |format|
-      format.html do
-        @stage = Setting.unroll(:opportunity_stage)
-        @comment = Comment.new
-        @timeline = timeline(@campaign)
-      end
+    # respond_with(@campaign) do |format|
+    #   format.html do
+    #     @stage = Setting.unroll(:opportunity_stage)
+    #     @comment = Comment.new
+    #     @timeline = timeline(@campaign)
+    #   end
 
-      format.js do
-        @stage = Setting.unroll(:opportunity_stage)
-        @comment = Comment.new
-        @timeline = timeline(@campaign)
-      end
+    #   format.js do
+    #     @stage = Setting.unroll(:opportunity_stage)
+    #     @comment = Comment.new
+    #     @timeline = timeline(@campaign)
+    #   end
 
-      format.xls do
-        @leads = @campaign.leads
-        render '/leads/index', layout: 'header'
-      end
+    #   format.xls do
+    #     @leads = @campaign.leads
+    #     render '/leads/index', layout: 'header'
+    #   end
 
-      format.csv do
-        render csv: @campaign.leads
-      end
+    #   format.csv do
+    #     render csv: @campaign.leads
+    #   end
 
-      format.rss do
-        @items  = "leads"
-        @assets = @campaign.leads
-      end
+    #   format.rss do
+    #     @items  = "leads"
+    #     @assets = @campaign.leads
+    #   end
 
-      format.atom do
-        @items  = "leads"
-        @assets = @campaign.leads
-      end
-    end
+    #   format.atom do
+    #     @items  = "leads"
+    #     @assets = @campaign.leads
+    #   end
+    # end
+    render json: {data: @campaign.to_json(include: [:tasks, :leads, :opportunities]), success: true}, status:500
   end
 
   # GET /campaigns/new
@@ -84,44 +86,53 @@ class CampaignsController < EntitiesController
   # GET /campaigns/1/edit                                                  AJAX
   #----------------------------------------------------------------------------
   def edit
-    @previous = Campaign.my(current_user).find_by_id(Regexp.last_match[1]) || Regexp.last_match[1].to_i if params[:previous].to_s =~ /(\d+)\z/
+    # @previous = Campaign.my(current_user).find_by_id(Regexp.last_match[1]) || Regexp.last_match[1].to_i if params[:previous].to_s =~ /(\d+)\z/
 
-    respond_with(@campaign)
+    render json: {data:@campaign.to_json, success: true}, status:200
   end
 
   # POST /campaigns
   #----------------------------------------------------------------------------
   def create
     @comment_body = params[:comment_body]
-
-    respond_with(@campaign) do |_format|
-      if @campaign.save
-        @campaign.add_comment_by_user(@comment_body, current_user)
-        @campaigns = get_campaigns
-        get_data_for_sidebar
-      end
+    @campaign = Campaign.new(params[:campaign])
+    if @campaign.save
+      @campaign.add_comment_by_user(@comment_body, current_user)
+      @campaigns = get_campaigns
+      # get_data_for_sidebar
+      render json: {data: @campaign, success: true}, status: 200
+    else
+      render json: {msg: @campaign.errors.to_json, success: false}, status: 500
     end
   end
 
   # PUT /campaigns/1
   #----------------------------------------------------------------------------
   def update
-    respond_with(@campaign) do |_format|
-      # Must set access before user_ids, because user_ids= method depends on access value.
-      @campaign.access = resource_params[:access] if resource_params[:access]
-      get_data_for_sidebar if @campaign.update(resource_params) && called_from_index_page?
+    @campaign = Campaign.find(params[:id])
+    # Must set access before user_ids, because user_ids= method depends on access value.
+    @campaign.access = resource_params[:access] if resource_params[:access]
+    # get_data_for_sidebar if @campaign.update(resource_params) && called_from_index_page?
+    if @campaign.update(params[:campaign])
+      render json: {data: @campaign.to_json, success: true}, status: 200
+    else
+      render json: {msg: @campaign.errors.to_json, success: false}, status: 500
     end
   end
 
   # DELETE /campaigns/1
   #----------------------------------------------------------------------------
-  def destroy
-    @campaign.destroy
-
-    respond_with(@campaign) do |format|
-      format.html { respond_to_destroy(:html) }
-      format.js   { respond_to_destroy(:ajax) }
+  def delete
+    if @campaign.destroy
+      render json: {data: @campaign, success: true}, status: 200
+    else
+      render json: {msg: @campaign.errors.to_json, success: false}, status: 500
     end
+
+    # respond_with(@campaign) do |format|
+    #   format.html { respond_to_destroy(:html) }
+    #   format.js   { respond_to_destroy(:ajax) }
+    # end
   end
 
   # PUT /campaigns/1/attach
@@ -163,7 +174,20 @@ class CampaignsController < EntitiesController
   private
 
   #----------------------------------------------------------------------------
-  alias get_campaigns get_list_of_records
+  # alias get_campaigns get_list_of_records
+  def get_campaigns
+    # self.current_page  = options[:page] if options[:page]
+    self.current_query = params[:query] if params[:query]
+
+    @search = klass.ransack(params[:q])
+    @search.build_grouping unless @search.groupings.any?
+
+    scope = Campaign.text_search(params[:query])
+    scope = scope.merge(@search.result)
+    scope = scope.text_search(current_query)      if current_query.present?
+    # scope = scope.paginate(page: current_page) if wants.html? || wants.js? || wants.xml?
+    scope
+  end
 
   #----------------------------------------------------------------------------
   def list_includes

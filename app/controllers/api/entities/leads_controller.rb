@@ -5,24 +5,18 @@
 # Fat Free CRM is freely distributable under the terms of MIT license.
 # See MIT-LICENSE file or http://www.opensource.org/licenses/mit-license.php
 #------------------------------------------------------------------------------
-class LeadsController < EntitiesController
-  before_action :get_data_for_sidebar, only: :index
-  autocomplete :account, :name, full: true
+class Api::Entities::LeadsController < Api::EntitiesController
+  # before_action :get_data_for_sidebar, only: :index
+  # autocomplete :account, :name, full: true
 
   # GET /leads
   #----------------------------------------------------------------------------
   def index
-    @leads = get_leads(page: page_param)
-
-    respond_with @leads do |format|
-      format.xls { render layout: 'header' }
-      format.csv { render csv: @leads }
-    end
+    @leads = get_leads
+    render json: {data: @leads.to_json(), success: true}, status: 200
   end
 
   # GET /leads/1
-  # AJAX /leads/1
-  #----------------------------------------------------------------------------
   def show
     @comment = Comment.new
     @timeline = timeline(@lead)
@@ -52,97 +46,89 @@ class LeadsController < EntitiesController
   def edit
     get_campaigns
 
-    @previous = Lead.my(current_user).find_by_id(Regexp.last_match[1]) || Regexp.last_match[1].to_i if params[:previous].to_s =~ /(\d+)\z/
+    # @previous = Lead.my(current_user).find_by_id(Regexp.last_match[1]) || Regexp.last_match[1].to_i if params[:previous].to_s =~ /(\d+)\z/
 
-    respond_with(@lead)
+    # respond_with(@lead)
+    render json: {data: @lead.to_json(include: [:tags])}, success: true
   end
 
   # POST /leads
   #----------------------------------------------------------------------------
   def create
-    get_campaigns
+    # get_campaigns
     @comment_body = params[:comment_body]
 
-    respond_with(@lead) do |_format|
-      if @lead.save_with_permissions(params.permit!)
-        @lead.add_comment_by_user(@comment_body, current_user)
-        if called_from_index_page?
-          @leads = get_leads
-          get_data_for_sidebar
-        else
-          get_data_for_sidebar(:campaign)
-        end
-      end
+    if @lead.save_with_permissions(params.permit!)
+      @lead.add_comment_by_user(@comment_body, current_user)
+      @leads = get_leads
+      render json: {data: @lead, success: true}, status: 200
+    else
+      render json: {msg: @lead.errors.to_json, success: false}, status: 500
     end
+
   end
 
   # PUT /leads/1
   #----------------------------------------------------------------------------
   def update
-    respond_with(@lead) do |_format|
-      # Must set access before user_ids, because user_ids= method depends on access value.
-      @lead.access = resource_params[:access] if resource_params[:access]
-      if @lead.update_with_lead_counters(resource_params)
-        update_sidebar
-      else
-        @campaigns = Campaign.my(current_user).order('name')
-      end
+    # Must set access before user_ids, because user_ids= method depends on access value.
+    @lead.access = resource_params[:access] if resource_params[:access]
+    if @lead.update_with_lead_counters(resource_params)
+    else
+      @campaigns = Campaign.my(current_user).order('name')
+    end
+    if @lead.save
+      render json: {data: @lead, success: true}, status: 200
+    else
+      render json: {data: @lead.errors.to_json, success: false}, status: 500
     end
   end
 
   # DELETE /leads/1
   #----------------------------------------------------------------------------
-  def destroy
-    @lead.destroy
-
-    respond_with(@lead) do |format|
-      format.html { respond_to_destroy(:html) }
-      format.js   { respond_to_destroy(:ajax) }
+  def delete
+    if @lead.destroy
+      render json: {data: @lead.to_json, success: true}, status: 200
+    else
+      render json: {data: @lead.errors.to_json, success: false}, status: 500
     end
+
+    # respond_with(@lead) do |format|
+    #   format.html { respond_to_destroy(:html) }
+    #   format.js   { respond_to_destroy(:ajax) }
+    # end
   end
 
-  # GET /leads/1/convert
+
+  # POST /leads/1/promote
   #----------------------------------------------------------------------------
   def convert
-    @account = Account.new(user: current_user, name: @lead.company, access: "Lead")
-    @accounts = Account.my(current_user).order('name')
-    @opportunity = Opportunity.new(user: current_user, access: "Lead", stage: "prospecting", campaign: @lead.campaign, source: @lead.source)
-
-    @previous = Lead.my(current_user).find_by_id(Regexp.last_match[1]) || Regexp.last_match[1].to_i if params[:previous].to_s =~ /(\d+)\z/
-
-    respond_with(@lead)
-  end
-
-  # PUT /leads/1/promote
-  #----------------------------------------------------------------------------
-  def promote
     @account, @opportunity, @contact = @lead.promote(params.permit!)
-    @accounts = Account.my(current_user).order('name')
+    # @accounts = Account.my(current_user).order('name')
     @stage = Setting.unroll(:opportunity_stage)
 
-    respond_with(@lead) do |format|
-      if @account.errors.empty? && @opportunity.errors.empty? && @contact.errors.empty?
-        @lead.convert
-        update_sidebar
-      else
-        format.json { render json: @account.errors + @opportunity.errors + @contact.errors, status: :unprocessable_entity }
-        format.xml  { render xml: @account.errors + @opportunity.errors + @contact.errors, status: :unprocessable_entity }
-      end
+    if @account.errors.empty? && @opportunity.errors.empty? && @contact.errors.empty?
+      @lead.convert
     end
+    render json: {data: @lead, success: true}, status: 200
   end
 
-  # PUT /leads/1/reject
+  # POST /leads/1/reject
   #----------------------------------------------------------------------------
   def reject
-    @lead.reject
-    update_sidebar
-
-    respond_with(@lead) do |format|
-      format.html do
-        flash[:notice] = t(:msg_asset_rejected, @lead.full_name)
-        redirect_to leads_path
-      end
+    if @lead.reject
+      render json: {data: @lead.to_json, success: true}, status: 200
+    else
+      render json: {data: @lead.errors.to_json, success: false}, status: 500
     end
+    # update_sidebar
+
+    # respond_with(@lead) do |format|
+    #   format.html do
+    #     flash[:notice] = t(:msg_asset_rejected, @lead.full_name)
+    #     redirect_to leads_path
+    #   end
+    # end
   end
 
   # PUT /leads/1/attach
@@ -194,7 +180,21 @@ class LeadsController < EntitiesController
   private
 
   #----------------------------------------------------------------------------
-  alias get_leads get_list_of_records
+  # alias get_leads get_list_of_records
+
+  def get_leads
+  # self.current_page  = options[:page] if options[:page]
+    self.current_query = params[:query] if params[:query]
+
+    @search = klass.ransack(params[:q])
+    @search.build_grouping unless @search.groupings.any?
+
+    scope = Lead.text_search(params[:query])
+    scope = scope.merge(@search.result)
+    scope = scope.text_search(current_query)      if current_query.present?
+    # scope = scope.paginate(page: current_page) if wants.html? || wants.js? || wants.xml?
+    scope
+  end
 
   #----------------------------------------------------------------------------
   def list_includes

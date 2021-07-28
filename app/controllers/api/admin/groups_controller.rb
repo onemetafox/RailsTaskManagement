@@ -17,9 +17,9 @@ class Api::Admin::GroupsController < Api::Admin::ApplicationController
     # render json: group_params
     @group = Group.new(group_params)
     if @group.save
-      render json: @group, status: 200
+      render json: {data: @group.to_json, success: true} , status: 200
     else
-      render json: @group.errors, status: 500
+      render json: {data: @group.errors.to_json, success: true}, status: 500
     end
   end
 
