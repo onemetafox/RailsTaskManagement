@@ -1360,7 +1360,271 @@
 				},
 				{
 					"name": "leads",
-					"item": []
+					"item": [
+						{
+							"name": "all",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "query",
+											"value": "",
+											"type": "text"
+										},
+										{
+											"key": "page",
+											"value": "3",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "localhost:3000/api/entities/leads",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"entities",
+										"leads"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "one",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "query",
+											"value": "he",
+											"type": "text",
+											"disabled": true
+										}
+									]
+								},
+								"url": {
+									"raw": "localhost:3000/api/entities/leads/6",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"entities",
+										"leads",
+										"6"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "query",
+											"value": "he",
+											"type": "text",
+											"disabled": true
+										}
+									]
+								},
+								"url": {
+									"raw": "localhost:3000/api/entities/leads/4/delete",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"entities",
+										"leads",
+										"4",
+										"delete"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "lead[user_id]",
+											"value": "5",
+											"type": "text"
+										},
+										{
+											"key": "ead[user_id]: 5\nlead[first_name]: Michael\nlead[last_name]: Jackson\nlead[email]: michael.jackson@jackson.com\nlead[phone]: 000234 7892\nlead[tag_list][]: \nlead[tag_list][]: 下級\nlead[tag_list][]: Homes\nlead[assigned_to]: \nlead[status]: new\nlead[rating]: 0\nlead[source]: other\nlead[campaign_id]: \nlead[title]: \nlead[company]: \nlead[alt_email]: \nlead[mobile]: \nlead[business_address_attributes][address_type]: Business\nlead[business_address_attributes][street1]: \nlead[business_address_attributes][street2]: \nlead[business_address_attributes][city]: \nlead[business_address_attributes][state]: \nlead[business_address_attributes][zipcode]: \nlead[business_address_attributes][country]: \nlead[business_address_attributes][id]: 428\nlead[referred_by]: \nlead[do_not_call]: 0\nlead[blog]: \nlead[twitter]: \nlead[linkedin]: \nlead[facebook]: \nlead[skype]: \nlead[cf_street_address]: \nlead[cf_rep_name]: Kat\nlead[cf_type_of_facility][]: \nlead[cf_dfdsffdf]: \nlead[access]: Public\nlead[user_ids][]: \nlead[group_ids][]:",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "lead[first_name",
+											"value": "",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "localhost:3000/api/entities/leads/5",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"entities",
+										"leads",
+										"5"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "create",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "lead[user_id]",
+											"value": "5",
+											"type": "text"
+										},
+										{
+											"key": "ead[user_id]: 5\nlead[first_name]: Michael\nlead[last_name]: Jackson\nlead[email]: michael.jackson@jackson.com\nlead[phone]: 000234 7892\nlead[tag_list][]: \nlead[tag_list][]: 下級\nlead[tag_list][]: Homes\nlead[assigned_to]: \nlead[status]: new\nlead[rating]: 0\nlead[source]: other\nlead[campaign_id]: \nlead[title]: \nlead[company]: \nlead[alt_email]: \nlead[mobile]: \nlead[business_address_attributes][address_type]: Business\nlead[business_address_attributes][street1]: \nlead[business_address_attributes][street2]: \nlead[business_address_attributes][city]: \nlead[business_address_attributes][state]: \nlead[business_address_attributes][zipcode]: \nlead[business_address_attributes][country]: \nlead[business_address_attributes][id]: 428\nlead[referred_by]: \nlead[do_not_call]: 0\nlead[blog]: \nlead[twitter]: \nlead[linkedin]: \nlead[facebook]: \nlead[skype]: \nlead[cf_street_address]: \nlead[cf_rep_name]: Kat\nlead[cf_type_of_facility][]: \nlead[cf_dfdsffdf]: \nlead[access]: Public\nlead[user_ids][]: \nlead[group_ids][]:",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										}
+									]
+								},
+								"url": {
+									"raw": "localhost:3000/api/entities/leads",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"entities",
+										"leads"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "convert",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "account[user_id]",
+											"value": "5",
+											"type": "text"
+										},
+										{
+											"key": "account[user_id]: 2\naccount[access]: Lead\naccount[name]: \naccount[assigned_to]: \nopportunity[user_id]: 2\nopportunity[access]: Lead\nopportunity[assigned_to]: \nopportunity[campaign_id]: 179\nopportunity[source]: campaign\nopportunity[name]: \nopportunity[stage]: prospecting\nopportunity[closes_on]: \nopportunity[probability]: \nopportunity[amount]: \nopportunity[discount]: \naccess: Lead\nlead[user_ids][]: \nlead[group_ids][]: ",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "account[access]",
+											"value": "Lead",
+											"type": "text"
+										},
+										{
+											"key": "account[name]",
+											"value": "qwe",
+											"type": "text"
+										},
+										{
+											"key": "opportunity[campaign_id]",
+											"value": "179",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "localhost:3000/api/entities/leads/5/convert",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"entities",
+										"leads",
+										"5",
+										"convert"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "reject",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": []
+								},
+								"url": {
+									"raw": "localhost:3000/api/entities/leads/5/reject",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"entities",
+										"leads",
+										"5",
+										"reject"
+									]
+								}
+							},
+							"response": []
+						}
+					]
 				},
 				{
 					"name": "contacts",
@@ -1439,7 +1703,7 @@
 									"formdata": []
 								},
 								"url": {
-									"raw": "localhost:3000/api/entities/contacts/1",
+									"raw": "localhost:3000/api/entities/contacts/1/edit",
 									"host": [
 										"localhost"
 									],
@@ -1448,7 +1712,8 @@
 										"api",
 										"entities",
 										"contacts",
-										"1"
+										"1",
+										"edit"
 									]
 								}
 							},
@@ -1867,6 +2132,202 @@
 										"opportunities",
 										"3",
 										"edit"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "campains",
+					"item": [
+						{
+							"name": "all",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "query",
+											"value": "hyddsec",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "localhost:3000/api/entities/campaigns",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"entities",
+										"campaigns"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "one",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:3000/api/entities/campaigns/6/edit",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"entities",
+										"campaigns",
+										"6",
+										"edit"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "localhost:3000/api/entities/campaigns/5/delete",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"entities",
+										"campaigns",
+										"5",
+										"delete"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "campaign[user_id]: 1\ncampaign[name]: Look sharp, feel sharp\ncampaign[starts_on]: 2018-06-05\ncampaign[ends_on]: 2018-07-14\ncampaign[status]: planned\ncampaign[tag_list][]: \ncampaign[tag_list][]: Products\ncampaign[tag_list][]: Homes\ncampaign[target_leads]: 137\ncampaign[target_conversion]: 24.0\ncampaign[target_revenue]: 998000\ncampaign[budget]: 347000\ncampaign[objectives]: Saepe corrupti harum neque repudiandae nihil dicta.\ncampaign[cf__]: \ncampaign[cf_campaign_type]: Simple\ncampaign[cf_checkiing_it][]: \ncampaign[cf_okokok][]: \ncampaign[cf_testtesttest]: \ncampaign[access]: Public\ncampaign[user_ids][]: \ncampaign[group_ids][]:",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "campaign[user_id]",
+											"value": "1",
+											"type": "text"
+										},
+										{
+											"key": "campaign[name]",
+											"value": "This is the test, feel sharp",
+											"type": "text"
+										},
+										{
+											"key": "campaign[starts_on]",
+											"value": "2018-06-05",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "localhost:3000/api/entities/campaigns/1",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"entities",
+										"campaigns",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "create",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "campaign[user_id]: 1\ncampaign[name]: Look sharp, feel sharp\ncampaign[starts_on]: 2018-06-05\ncampaign[ends_on]: 2018-07-14\ncampaign[status]: planned\ncampaign[tag_list][]: \ncampaign[tag_list][]: Products\ncampaign[tag_list][]: Homes\ncampaign[target_leads]: 137\ncampaign[target_conversion]: 24.0\ncampaign[target_revenue]: 998000\ncampaign[budget]: 347000\ncampaign[objectives]: Saepe corrupti harum neque repudiandae nihil dicta.\ncampaign[cf__]: \ncampaign[cf_campaign_type]: Simple\ncampaign[cf_checkiing_it][]: \ncampaign[cf_okokok][]: \ncampaign[cf_testtesttest]: \ncampaign[access]: Public\ncampaign[user_ids][]: \ncampaign[group_ids][]:",
+											"value": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "campaign[user_id]",
+											"value": "1",
+											"type": "text"
+										},
+										{
+											"key": "campaign[name]",
+											"value": "This is the test, feel sharpdce",
+											"type": "text"
+										},
+										{
+											"key": "campaign[starts_on]",
+											"value": "2018-06-05",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "localhost:3000/api/entities/campaigns",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"entities",
+										"campaigns"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "show",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:3000/api/entities/campaigns/10",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"entities",
+										"campaigns",
+										"10"
 									]
 								}
 							},

@@ -92,25 +92,17 @@ class Api::Entities::LeadsController < Api::EntitiesController
     else
       render json: {data: @lead.errors.to_json, success: false}, status: 500
     end
-
-    # respond_with(@lead) do |format|
-    #   format.html { respond_to_destroy(:html) }
-    #   format.js   { respond_to_destroy(:ajax) }
-    # end
   end
 
 
   # POST /leads/1/promote
   #----------------------------------------------------------------------------
   def convert
-    @account, @opportunity, @contact = @lead.promote(params.permit!)
-    # @accounts = Account.my(current_user).order('name')
-    @stage = Setting.unroll(:opportunity_stage)
+    @account = Account.new(user: current_user, name: @lead.company, access: "Lead")
+    @accounts = Account.my(current_user).order('name')
+    @opportunity = Opportunity.new(user: current_user, access: "Lead", stage: "prospecting", campaign: @lead.campaign, source: @lead.source)
 
-    if @account.errors.empty? && @opportunity.errors.empty? && @contact.errors.empty?
-      @lead.convert
-    end
-    render json: {data: @lead, success: true}, status: 200
+    render json: {account: @account.to_json, accounts: @accounts.to_json, opportunity: @opportunity.to_json, success: true}, status:200
   end
 
   # POST /leads/1/reject
@@ -121,28 +113,8 @@ class Api::Entities::LeadsController < Api::EntitiesController
     else
       render json: {data: @lead.errors.to_json, success: false}, status: 500
     end
-    # update_sidebar
-
-    # respond_with(@lead) do |format|
-    #   format.html do
-    #     flash[:notice] = t(:msg_asset_rejected, @lead.full_name)
-    #     redirect_to leads_path
-    #   end
-    # end
   end
-
-  # PUT /leads/1/attach
-  #----------------------------------------------------------------------------
-  # Handled by EntitiesController :attach
-
-  # POST /leads/1/discard
-  #----------------------------------------------------------------------------
-  # Handled by EntitiesController :discard
-
-  # POST /leads/auto_complete/query                                        AJAX
-  #----------------------------------------------------------------------------
-  # Handled by ApplicationController :auto_complete
-
+  
   # GET /leads/redraw                                                      AJAX
   #----------------------------------------------------------------------------
   def redraw
