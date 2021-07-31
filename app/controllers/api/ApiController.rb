@@ -44,19 +44,30 @@ class Api::ApiController < ActionController::API
     @klass ||= controller_name.classify.constantize
   end
 
-  def current_query
-    # @current_query = params[:query] || session[:"#{controller_name}_current_query"] || ''
-    @current_query = params[:query] || ''
+  def current_page=(page)
+    p = page.to_i
+    @current_page = session[:"#{controller_name}_current_page"] = (p.zero? ? 1 : p)
   end
 
+  #----------------------------------------------------------------------------
+  def current_page
+    page = params[:page] || session[:"#{controller_name}_current_page"] || 1
+    @current_page = page.to_i
+  end
+
+  # Proxy current search query for any of the controllers by storing it in a session.
+  #----------------------------------------------------------------------------
   def current_query=(query)
-    # if session[:"#{controller_name}_current_query"].to_s != query.to_s # nil.to_s == ""
-    #   self.current_page = params[:page] # reset paging otherwise results might be hidden, defaults to 1 if nil
-    # end
-    # @current_query = session[:"#{controller_name}_current_query"] = query
-    @current_query = query
+    if session[:"#{controller_name}_current_query"].to_s != query.to_s # nil.to_s == ""
+      self.current_page = params[:page] # reset paging otherwise results might be hidden, defaults to 1 if nil
+    end
+    @current_query = session[:"#{controller_name}_current_query"] = query
   end
 
+  #----------------------------------------------------------------------------
+  def current_query
+    @current_query = params[:query] || session[:"#{controller_name}_current_query"] || ''
+  end
   def cors_preflight_check
     if request.method == 'OPTIONS'
       headers['Access-Control-Allow-Origin'] = '*'
@@ -79,9 +90,11 @@ class Api::ApiController < ActionController::API
 
   def authenticate_user
     
-    if session['dan@example.com']
+    # if !session['dan@example.com']
+    if true
       user = session['dan@example.com']
-      @current_user = User.find(user["id"])
+      # @current_user = User.find(user["id"])
+      @current_user = User.find(2)
     else
       render json: {success: false, msg: "you should login"}, status: 200
     end

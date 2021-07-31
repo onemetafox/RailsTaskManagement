@@ -23,15 +23,15 @@ class Api::Admin::FieldsController < Api::Admin::ApplicationController
   def create
     as = field_params[:as]
     @field =
-      if as.match?(/pair/)
-        CustomFieldPair.create_pair(params).first
-      elsif as.present?
-        # klass = find_class(Field.lookup_class(as))
-        klass = Field.lookup_class(as).safe_constantize
-        klass.create(field_params)
-      else
+      # if as.match?(/pair/)
+      #   CustomFieldPair.create_pair(params).first
+      # elsif as.present?
+      #   # klass = find_class(Field.lookup_class(as))
+      #   klass = Field.lookup_class(as).safe_constantize
+      #   klass.create(field_params)
+      # else
         Field.new(field_params).tap(&:valid?)
-      end
+      # end
     if @field.save
       render json: {data: @field, success: true}, status: 200
     else

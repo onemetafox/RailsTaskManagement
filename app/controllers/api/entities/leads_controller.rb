@@ -183,7 +183,7 @@ class Api::Entities::LeadsController < Api::EntitiesController
   # alias get_leads get_list_of_records
 
   def get_leads
-  # self.current_page  = options[:page] if options[:page]
+    self.current_page  = params[:page] if params[:page]
     self.current_query = params[:query] if params[:query]
 
     @search = klass.ransack(params[:q])
@@ -192,7 +192,7 @@ class Api::Entities::LeadsController < Api::EntitiesController
     scope = Lead.text_search(params[:query])
     scope = scope.merge(@search.result)
     scope = scope.text_search(current_query)      if current_query.present?
-    # scope = scope.paginate(page: current_page) if wants.html? || wants.js? || wants.xml?
+    scope = scope.paginate(page: current_page)
     scope
   end
 
