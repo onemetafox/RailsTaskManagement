@@ -14,17 +14,13 @@ class Api::Entities::AccountsController < Api::EntitiesController
     # @accounts = get_accounts(page: page_param, per_page: per_page_param)
     @accounts = get_accouts
     render json: {data: @accounts.to_json(include: [:assignee, :tags]), success: true }, status: 200
-    # respond_with @accounts do |format|
-    #   format.xls { render layout: 'header' }
-    #   format.csv { render csv: @accounts }
-    # end
   end
 
   # GET /accounts/1
   def show
-    # @stage = Setting.unroll(:opportunity_stage)
-    # @comment = Comment.new
-    # @timeline = timeline(@account)
+    @stage = Setting.unroll(:opportunity_stage)
+    @comment = Comment.new
+    @timeline = timeline(@account)
     render json: { data: @account.to_json(include: [:tasks, :contacts, :opportunities]), success: true }, status: 200
   end
 
@@ -120,7 +116,7 @@ class Api::Entities::AccountsController < Api::EntitiesController
   #----------------------------------------------------------------------------
   # alias get_accounts get_list_of_records
   def get_accouts
-    # self.current_page  = options[:page] if options[:page]
+    self.current_page  = params[:page] if params[:page]
     self.current_query = params[:query] if params[:query]
 
     @search = klass.ransack(params[:q])
@@ -129,7 +125,7 @@ class Api::Entities::AccountsController < Api::EntitiesController
     scope = Account.text_search(params[:query])
     scope = scope.merge(@search.result)
     scope = scope.text_search(current_query)      if current_query.present?
-    # scope = scope.paginate(page: current_page) if wants.html? || wants.js? || wants.xml?
+    scope = scope.paginate(page: current_page)
     scope
   end
 

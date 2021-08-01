@@ -308,6 +308,7 @@ Rails.application.routes.draw do
           post :update
           post :convert
           post :reject
+          post :promote
         end
       end
       resources :contacts, id: /\d+/ do

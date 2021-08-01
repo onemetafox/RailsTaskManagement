@@ -12,6 +12,8 @@ class Api::Entities::CampaignsController < Api::EntitiesController
   #----------------------------------------------------------------------------
   def index
     # @campaigns = get_campaigns(page: page_param, per_page: per_page_param)
+    @campaigns = get_campaigns
+
     render json: {data: @campaigns.to_json, success: true}, status: 200
 
     # respond_with @campaigns do |format|
@@ -176,7 +178,7 @@ class Api::Entities::CampaignsController < Api::EntitiesController
   #----------------------------------------------------------------------------
   # alias get_campaigns get_list_of_records
   def get_campaigns
-    # self.current_page  = options[:page] if options[:page]
+    self.current_page  = params[:page] if params[:page]
     self.current_query = params[:query] if params[:query]
 
     @search = klass.ransack(params[:q])
@@ -185,7 +187,7 @@ class Api::Entities::CampaignsController < Api::EntitiesController
     scope = Campaign.text_search(params[:query])
     scope = scope.merge(@search.result)
     scope = scope.text_search(current_query)      if current_query.present?
-    # scope = scope.paginate(page: current_page) if wants.html? || wants.js? || wants.xml?
+    scope = scope.paginate(page: current_page) 
     scope
   end
 

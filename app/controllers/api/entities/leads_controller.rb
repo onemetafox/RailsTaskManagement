@@ -95,7 +95,7 @@ class Api::Entities::LeadsController < Api::EntitiesController
   end
 
 
-  # POST /leads/1/promote
+  # POST /leads/1/convert
   #----------------------------------------------------------------------------
   def convert
     @account = Account.new(user: current_user, name: @lead.company, access: "Lead")
@@ -103,6 +103,25 @@ class Api::Entities::LeadsController < Api::EntitiesController
     @opportunity = Opportunity.new(user: current_user, access: "Lead", stage: "prospecting", campaign: @lead.campaign, source: @lead.source)
 
     render json: {account: @account.to_json, accounts: @accounts.to_json, opportunity: @opportunity.to_json, success: true}, status:200
+  end
+
+
+  def promote
+    @account, @opportunity, @contact = @lead.promote(params.permit!)
+    @accounts = Account.my(current_user).order('name')
+    @stage = Setting.unroll(:opportunity_stage)
+
+      if @account.errors.empty? && @opportunity.errors.empty? && @contact.errors.empty?
+        
+        if @lead.convert
+          render json: {data: $lead.to_json, success: true}, status: 200
+        else
+        end
+
+        # update_sidebar
+      else
+        render json: { msg: @account.errors.to_json + @opportunity.errors.to_json + @contact.errors.to_json, success: false }, status: 500
+      end
   end
 
   # POST /leads/1/reject
